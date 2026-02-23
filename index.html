@@ -3,67 +3,100 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Shristi Sinha | Portfolio</title>
+    <title>Shristi Sinha | Computer Science & Style</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-    <div class="bg-animation"></div>
+    <div class="pink-gradient-bg"></div>
 
     <nav class="navbar">
-        <div class="nav-links">
-            <button class="nav-btn active" onclick="openTab(event, 'home')">Home</button>
-            <button class="nav-btn" onclick="openTab(event, 'about')">About</button>
-            <button class="nav-btn" onclick="openTab(event, 'skills')">Skills</button>
-            <button class="nav-btn" onclick="openTab(event, 'projects')">Projects</button>
-        </div>
+        <button class="nav-btn active" onclick="openTab(event, 'home')">Home</button>
+        <button class="nav-btn" onclick="openTab(event, 'about')">Resume & Bio</button>
+        <button class="nav-btn" onclick="openTab(event, 'skills')">Expertise</button>
+        <button class="nav-btn" onclick="openTab(event, 'projects')">Portfolio</button>
     </nav>
 
     <div class="container">
         <div id="home" class="tab-content active">
             <header class="hero">
-                <div class="profile-container">
-                    <img src="images.jpeg" alt="Shristi" class="profile-pic">
+                <div class="bow-icon">🎀</div>
+                <div class="profile-frame">
+                    <img src="images.jpeg" alt="Shristi Sinha" class="profile-pic">
                 </div>
-                <h1>Shristi Sinha</h1>
+                <h1 class="signature">Shristi Sinha</h1>
                 <p class="tagline"><span id="typing"></span><span class="cursor">|</span></p>
             </header>
         </div>
 
         <div id="about" class="tab-content">
-            <section class="card">
-                <h2><i class="fas fa-user"></i> About Me</h2>
-                <p>Passionate Computer Vision enthusiast and Java developer. I specialize in building intelligent systems that bridge the gap between human intuition and machine processing.</p>
-                <div class="stats-mini">
-                    <span><strong>53kg</strong> / <strong>155cm</strong> Focus on Health AI</span>
+            <section class="pink-card">
+                <div class="card-header">
+                    <span class="bow-small">🎀</span>
+                    <h2>Education & Background</h2>
+                </div>
+                <div class="bio-text">
+                    <p><strong>B.Tech in Computer Science & Engineering</strong></p>
+                    <p>I am a dedicated engineer who believes that technical prowess and personal style aren't mutually exclusive. My academic journey is fueled by a passion for Artificial Intelligence, where I maintain a high standard of excellence in software architecture and machine learning research.</p>
+                    
+                    <h3>Academic Details</h3>
+                    <ul class="pink-list">
+                        <li><strong>Major:</strong> Computer Science & Engineering</li>
+                        <li><strong>Specialization:</strong> AI & Machine Learning Frameworks</li>
+                        <li><strong>Thesis Interest:</strong> Intelligent Health Recommendations & CV</li>
+                    </ul>
+
+                    <h3>Beyond the Code (Hobbies)</h3>
+                    <p>When I'm not optimizing algorithms, you can find me exploring <strong>Digital Photography</strong>, contributing to <strong>Open Source</strong>, or deep-diving into <strong>Fitness Analytics</strong>. I am passionate about wellness tracking—keeping a close eye on my health goals (155cm / 53kg) through data-driven insights.</p>
                 </div>
             </section>
         </div>
 
         <div id="skills" class="tab-content">
-            <section class="card">
-                <h2><i class="fas fa-code"></i> Technical Arsenal</h2>
-                <div class="skill-grid">
-                    <div class="skill-item"><span>Java</span><div class="dot-bar"><div class="fill" style="width:90%"></div></div></div>
-                    <div class="skill-item"><span>Python</span><div class="dot-bar"><div class="fill" style="width:85%"></div></div></div>
-                    <div class="skill-item"><span>OpenCV</span><div class="dot-bar"><div class="fill" style="width:75%"></div></div></div>
+            <section class="pink-card">
+                <div class="card-header">
+                    <span class="bow-small">🎀</span>
+                    <h2>Technical Expertise</h2>
+                </div>
+                
+                <div class="skill-group">
+                    <h3>The Languages</h3>
+                    <div class="skill-tag">Java (Multithreading)</div>
+                    <div class="skill-tag">C++</div>
+                    <div class="skill-tag">Python</div>
+                </div>
+
+                <div class="skill-group">
+                    <h3>AI & CV</h3>
+                    <div class="skill-tag">Computer Vision (CV)</div>
+                    <div class="skill-tag">Machine Learning (ML)</div>
+                    <div class="skill-tag">OpenCV</div>
+                </div>
+
+                <div class="skill-group">
+                    <h3>Development & Tools</h3>
+                    <div class="skill-tag">Flutter App Dev</div>
+                    <div class="skill-tag">Excel Data Analysis</div>
+                    <div class="skill-tag">Software Design</div>
                 </div>
             </section>
         </div>
 
         <div id="projects" class="tab-content">
-            <section class="card">
-                <h2><i class="fas fa-rocket"></i> Projects</h2>
-                <div class="project-grid">
-                    <div class="project-box">
-                        <h3>PCOD Management</h3>
-                        <p>AI tracking system.</p>
-                    </div>
-                    <div class="project-box">
-                        <h3>CV Tool</h3>
-                        <p>Feature extraction via OpenCV.</p>
-                    </div>
+            <section class="pink-card">
+                <div class="card-header">
+                    <span class="bow-small">🎀</span>
+                    <h2>Portfolio</h2>
+                </div>
+                <div class="project-item">
+                    <h3>PCOD Management App</h3>
+                    <p>A sophisticated mobile application built with **Flutter** and **ML** logic to help women track and manage health metrics through intelligent AI-driven feedback.</p>
+                </div>
+                <div class="project-item">
+                    <h3>CV Image Processor</h3>
+                    <p>Utilizing **Python** and **C++** logic to perform real-time feature extraction with high-speed **Multithreading** capabilities.</p>
                 </div>
             </section>
         </div>
