@@ -1,75 +1,54 @@
-// Select elements
-const form = document.getElementById("feedbackForm");
-const successMessage = document.getElementById("successMessage");
-const feedbackDisplay = document.getElementById("feedbackDisplay");
+/* Typing Effect */
+const texts = [
+    "Computer Vision Enthusiast",
+    "Java Developer",
+    "AI Builder",
+    "Problem Solver"
+];
 
-// When page loads, show saved feedback
-window.onload = function () {
-    displayFeedback();
-};
+let count = 0;
+let index = 0;
+let currentText = "";
+let letter = "";
 
-form.addEventListener("submit", function (event) {
-    event.preventDefault(); // Stop form from refreshing page
-
-    const name = document.getElementById("name").value.trim();
-    const email = document.getElementById("email").value.trim();
-    const message = document.getElementById("message").value.trim();
-
-    // Validation: Name should not be empty
-    if (name === "") {
-        alert("Name cannot be empty!");
-        return;
+function type() {
+    if (count === texts.length) {
+        count = 0;
     }
 
-    // Validation: Email format check
-    const emailPattern = /^[^ ]+@[^ ]+\.[a-z]{2,3}$/;
+    currentText = texts[count];
+    letter = currentText.slice(0, ++index);
 
-    if (!email.match(emailPattern)) {
-        alert("Please enter a valid email address!");
-        return;
+    document.getElementById("typing").textContent = letter;
+
+    if (letter.length === currentText.length) {
+        count++;
+        index = 0;
+        setTimeout(type, 1200);
+    } else {
+        setTimeout(type, 80);
     }
+}
 
-    // Create feedback object
-    const feedback = {
-        name: name,
-        email: email,
-        message: message
-    };
+type();
 
-    // Get existing feedback from localStorage
-    let feedbackList = JSON.parse(localStorage.getItem("feedbackList")) || [];
+/* Scroll Reveal */
+const reveals = document.querySelectorAll('.reveal');
 
-    // Add new feedback
-    feedbackList.push(feedback);
+window.addEventListener('scroll', () => {
+    reveals.forEach(element => {
+        const windowHeight = window.innerHeight;
+        const revealTop = element.getBoundingClientRect().top;
 
-    // Save back to localStorage
-    localStorage.setItem("feedbackList", JSON.stringify(feedbackList));
-
-    // Show success message
-    successMessage.textContent = "🎉 Feedback submitted successfully!";
-
-    // Clear form
-    form.reset();
-
-    // Update displayed feedback
-    displayFeedback();
+        if (revealTop < windowHeight - 100) {
+            element.style.opacity = 1;
+            element.style.transform = "translateY(0)";
+        }
+    });
 });
 
-function displayFeedback() {
-    // Get stored feedback
-    const feedbackList = JSON.parse(localStorage.getItem("feedbackList")) || [];
-
-    // Reset display section
-    feedbackDisplay.innerHTML = "<h3>Submitted Feedback</h3>";
-
-    // Loop through feedback and display
-    feedbackList.forEach(function (item) {
-        const div = document.createElement("div");
-        div.innerHTML = `
-            <p><strong>${item.name}</strong> (${item.email})</p>
-            <p>${item.message}</p>
-            <hr>
-        `;
-        feedbackDisplay.appendChild(div);
-    });
-}
+reveals.forEach(element => {
+    element.style.opacity = 0;
+    element.style.transform = "translateY(30px)";
+    element.style.transition = "all 0.8s ease";
+});
