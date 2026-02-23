@@ -1,13 +1,101 @@
-.project {
-    background: #1a1a2e;
-    padding: 20px;
-    margin: 20px 0;
-    border-left: 5px solid #00f5d4;
-    border-radius: 10px;
-    transition: all 0.3s ease;
+/* Google Font */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap');
+
+body {
+    margin: 0;
+    font-family: 'Poppins', sans-serif;
+    background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+    color: white;
 }
 
-.project:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 5px 20px rgba(0, 245, 212, 0.4);
+/* Hero Section */
+.hero {
+    text-align: center;
+    padding: 60px 20px;
+}
+
+.profile-pic {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    border: 4px solid #00f5d4;
+    box-shadow: 0 0 20px #00f5d4;
+}
+
+.tagline {
+    color: #00f5d4;
+    margin-top: 10px;
+}
+
+/* Section Styling */
+section {
+    padding: 60px 10%;
+}
+
+h2 {
+    text-align: center;
+    margin-bottom: 40px;
+    font-size: 32px;
+    color: #00f5d4;
+}
+
+/* Project Cards */
+.project-card {
+    display: flex;
+    background: rgba(255, 255, 255, 0.05);
+    margin-bottom: 30px;
+    border-radius: 15px;
+    overflow: hidden;
+    backdrop-filter: blur(10px);
+    transition: transform 0.3s ease;
+}
+
+.project-card:hover {
+    transform: scale(1.03);
+    box-shadow: 0 0 25px rgba(0, 245, 212, 0.4);
+}
+
+.project-img {
+    width: 250px;
+    object-fit: cover;
+}
+
+.project-content {
+    padding: 20px;
+}
+
+/* Contact Form */
+form {
+    max-width: 500px;
+    margin: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+input, textarea {
+    padding: 12px;
+    border-radius: 8px;
+    border: none;
+    outline: none;
+}
+
+button {
+    padding: 12px;
+    background: #00f5d4;
+    border: none;
+    border-radius: 8px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+button:hover {
+    background: #00c9a7;
+}
+
+/* Footer */
+footer {
+    text-align: center;
+    padding: 20px;
+    background: rgba(0, 0, 0, 0.4);
 }
