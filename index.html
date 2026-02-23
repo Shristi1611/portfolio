@@ -1,50 +1,96 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <meta charset="UTF-8">
-    <title>Shristi Sinha - Portfolio</title>
+    <title>Shristi Sinha | Portfolio</title>
     <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
 
-<header>
-    <h1>Shristi Sinha</h1>
-</header>
+    <!-- HERO SECTION -->
+    <header class="hero">
+        <img src="images/profile.jpg" class="profile-pic">
+        <h1>Shristi Sinha</h1>
+        <p class="tagline">Computer Vision Enthusiast | Java Developer</p>
+    </header>
 
-<section id="projects">
-    <h2>Projects</h2>
 
-    <div class="project">
-        <h3>Real-Time Face Detector</h3>
-        <p>
-            A computer vision application that detects human faces in real-time 
-            using a webcam feed. The system processes live video frames and 
-            highlights detected faces with bounding boxes.
+    <!-- ABOUT SECTION -->
+    <section id="about">
+        <h2>About Me</h2>
+        <p class="center-text">
+            I am a passionate developer interested in Computer Vision and Java-based
+            applications. I enjoy building real-world projects that combine logic,
+            creativity and problem-solving.
         </p>
-        <p><strong>Tech Used:</strong> Python, OpenCV, Haar Cascade Classifier</p>
-        <p>
-            <strong>Key Features:</strong> Real-time detection, High accuracy, 
-            Lightweight model for fast performance.
-        </p>
-    </div>
+    </section>
 
-    <div class="project">
-        <h3>Invisibility Cloak Effect</h3>
-        <p>
-            A computer vision project that creates an "invisible cloak" illusion 
-            by masking a selected color (like red) and replacing it with the 
-            background in live video.
-        </p>
-        <p><strong>Tech Used:</strong> Python, OpenCV, NumPy</p>
-        <p>
-            <strong>Key Features:</strong> Background capture, Color detection, 
-            Real-time video frame processing.
-        </p>
-    </div>
-</section>
 
-<script src="script.js"></script>
+    <!-- SKILLS SECTION -->
+    <section id="skills">
+        <h2>Skills</h2>
+        <ul class="skills-list">
+            <li>Python</li>
+            <li>OpenCV</li>
+            <li>Java</li>
+            <li>HTML, CSS, JavaScript</li>
+            <li>Multithreading & Collections</li>
+        </ul>
+    </section>
+
+
+    <!-- PROJECTS SECTION -->
+    <section id="projects">
+        <h2>Projects</h2>
+
+        <div class="project-card">
+            <h3>Real-Time Face Detector</h3>
+            <p>
+                A computer vision application that detects human faces in real time
+                using webcam input and Haar Cascade classifier.
+            </p>
+            <p><strong>Tech Used:</strong> Python, OpenCV</p>
+        </div>
+
+        <div class="project-card">
+            <h3>Invisibility Cloak Effect</h3>
+            <p>
+                A real-time computer vision system that creates an invisibility
+                illusion by masking a selected color and replacing it with the background.
+            </p>
+            <p><strong>Tech Used:</strong> Python, OpenCV, NumPy</p>
+        </div>
+    </section>
+
+
+    <!-- CONTACT SECTION -->
+    <section id="contact">
+        <h2>Contact / Feedback</h2>
+
+        <form id="feedbackForm">
+            <input type="text" id="name" placeholder="Enter your name">
+            <input type="email" id="email" placeholder="Enter your email">
+            <textarea id="message" placeholder="Enter your feedback"></textarea>
+            <button type="submit">Submit</button>
+        </form>
+
+        <p id="successMessage"></p>
+
+        <div id="feedbackDisplay">
+            <h3>Submitted Feedback</h3>
+        </div>
+    </section>
+
+
+    <!-- FOOTER -->
+    <footer>
+        <p>© 2026 Shristi Sinha | All Rights Reserved</p>
+    </footer>
+
+    <script src="script.js"></script>
 
 </body>
+
 </html>
