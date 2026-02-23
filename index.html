@@ -10,7 +10,12 @@
 </head>
 <body>
 
-    <div id="custom-cursor"></div>
+    <div id="custom-cursor">
+        <div class="bow-left"></div>
+        <div class="bow-center"></div>
+        <div class="bow-right"></div>
+    </div>
+
     <canvas id="particle-canvas"></canvas>
 
     <nav class="navbar">
@@ -38,59 +43,55 @@
         </div>
 
         <div id="about" class="tab-content">
-            <section class="pink-card">
-                <div class="card-header">
+            <section class="pink-card centered-content">
+                <div class="card-header centered-header">
                     <span class="bow-small">🎀</span>
                     <h2>Education & Background</h2>
                 </div>
-                <div class="timeline-item">
+                <div class="details">
                     <h3>B.Tech in Computer Science & Engineering</h3>
                     <p class="sub-detail">Expected 2026</p>
-                    <p>Focusing on AI-driven architectures and high-performance computing. I maintain a disciplined lifestyle, balancing intense coding sessions with health goals (155cm / 53kg).</p>
-                </div>
-                <div class="timeline-item">
-                    <h3>Hobbies</h3>
-                    <p>Digital Photography, Open Source, and Fitness Tracking.</p>
+                    <p>Specializing in AI-driven architectures and Computer Vision. Currently maintaining a healthy lifestyle (155cm / 53kg) while mastering Java Multithreading and complex ML algorithms.</p>
                 </div>
             </section>
         </div>
 
         <div id="skills" class="tab-content">
-            <section class="pink-card centered-card">
+            <section class="pink-card centered-content">
                 <div class="card-header centered-header">
                     <span class="bow-small">🎀</span>
                     <h2>Interactive Skills Matrix</h2>
                 </div>
                 <div class="interactive-skill-container">
                     <div class="skill-tag-advanced" data-detail="Multithreading, JVM, OOPs">Java</div>
-                    <div class="skill-tag-advanced" data-detail="OpenCV, Feature Extraction">CV</div>
+                    <div class="skill-tag-advanced" data-detail="OpenCV, Image Processing">CV</div>
                     <div class="skill-tag-advanced" data-detail="Neural Nets, TensorFlow">ML</div>
                     <div class="skill-tag-advanced" data-detail="State Management, UI/UX">Flutter</div>
-                    <div class="skill-tag-advanced" data-detail="STL, Systems Programming">C++</div>
+                    <div class="skill-tag-advanced" data-detail="STL, Memory Management">C++</div>
                     <div class="skill-tag-advanced" data-detail="Data Analysis, Pivots">Excel</div>
                 </div>
             </section>
         </div>
 
         <div id="projects" class="tab-content">
-            <section class="pink-card">
-                <div class="card-header">
+            <section class="pink-card centered-content">
+                <div class="card-header centered-header">
                     <span class="bow-small">🎀</span>
-                    <h2>Featured Portfolio</h2>
+                    <h2>Portfolio</h2>
                 </div>
                 <div class="project-card-premium">
                     <h3>PCOD Management App</h3>
-                    <p>A Flutter application utilizing ML to provide intelligent health recommendations based on user data.</p>
+                    <p>AI-driven health tracking application using Flutter and Machine Learning.</p>
                 </div>
                 <div class="project-card-premium">
                     <h3>CV Image Processor</h3>
-                    <p>High-speed tool developed in C++ and Python using OpenCV and Multithreading.</p>
+                    <p>High-speed C++/OpenCV tool optimized with Multithreading for real-time analysis.</p>
                 </div>
             </section>
         </div>
 
         <div id="contact" class="tab-content">
-            <section class="pink-card">
+            <section class="pink-card centered-content">
                 <div class="card-header centered-header">
                     <span class="bow-small">🎀</span>
                     <h2>Leave a Note</h2>
@@ -101,24 +102,4 @@
                         <span id="nameError" class="error-msg"></span>
                     </div>
                     <div class="form-group">
-                        <input type="email" id="userEmail" placeholder="Your Email" class="form-input">
-                        <span id="emailError" class="error-msg"></span>
-                    </div>
-                    <div class="form-group">
-                        <textarea id="userMessage" placeholder="Your Message..." class="form-input" rows="4"></textarea>
-                    </div>
-                    <button type="submit" class="view-project-btn">Send Message 💌</button>
-                </form>
-                <div id="successMessage" class="hidden-message">
-                    <p>What, like it's hard? Message sent successfully! 🎀</p>
-                    <p style="font-size: 0.8rem;">I'll reply to you at shristisinha@gmail.com</p>
-                </div>
-            </section>
-        </div>
-    </div>
-
-    <button id="backToTop">🎀</button>
-
-    <script src="script.js"></script>
-</body>
-</html>
+                        <input type="email" id="userEmail" placeholder="Your Email" class="form-
