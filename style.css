@@ -1,34 +1,24 @@
-/* ========== GLOBAL STYLES ========== */
+/* GLOBAL */
 
 body {
     margin: 0;
-    font-family: 'Segoe UI', sans-serif;
-    background: linear-gradient(-45deg, #1e3c72, #2a5298, #0f2027, #203a43);
-    background-size: 400% 400%;
-    animation: gradientMove 12s ease infinite;
+    font-family: Arial, sans-serif;
+    background: linear-gradient(to right, #1e3c72, #2a5298);
     display: flex;
     justify-content: center;
     color: white;
 }
 
-/* Animated background */
-@keyframes gradientMove {
-    0% { background-position: 0% 50%; }
-    50% { background-position: 100% 50%; }
-    100% { background-position: 0% 50%; }
-}
-
-/* ========== MAIN CONTAINER ========== */
+/* MAIN CONTAINER */
 
 .container {
     width: 90%;
     max-width: 900px;
-    margin: auto;
-    text-align: center;
     padding: 50px 20px;
+    text-align: center;
 }
 
-/* ========== HERO SECTION ========== */
+/* HERO */
 
 .hero {
     margin-bottom: 40px;
@@ -40,90 +30,52 @@ body {
     border-radius: 50%;
     border: 4px solid white;
     object-fit: cover;
-    transition: transform 0.4s ease;
-}
-
-.profile-pic:hover {
-    transform: scale(1.08);
 }
 
 h1 {
     margin: 15px 0 5px 0;
-    font-size: 2.2rem;
 }
 
 .tagline {
-    font-size: 1.2rem;
     color: #ddd;
 }
 
-/* ========== GLASS CARD STYLE ========== */
+/* CARD DESIGN */
 
 .card {
     background: rgba(255, 255, 255, 0.1);
-    backdrop-filter: blur(12px);
-    border-radius: 20px;
+    border-radius: 15px;
     padding: 30px;
     margin: 30px 0;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    backdrop-filter: blur(6px);
 }
 
-.card:hover {
-    transform: translateY(-6px);
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
-}
-
-.card h2 {
-    margin-bottom: 15px;
-}
-
-.card p {
-    line-height: 1.6;
-}
-
-/* ========== SKILLS SECTION (FULLY CENTERED) ========== */
+/* SKILLS */
 
 .skill {
-    text-align: center;
     margin: 20px 0;
 }
 
 .bar {
     height: 8px;
-    background: rgba(255,255,255,0.25);
+    background: rgba(255,255,255,0.3);
     border-radius: 10px;
     width: 80%;
     margin: 8px auto;
-    overflow: hidden;
 }
 
 .progress {
     height: 8px;
     background: #00eaff;
     border-radius: 10px;
-    transition: width 1s ease-in-out;
 }
 
-/* ========== PROJECT CARDS ========== */
+/* PROJECTS */
 
 .project-card {
     background: rgba(255,255,255,0.15);
     margin: 20px auto;
     padding: 20px;
-    border-radius: 15px;
+    border-radius: 10px;
     width: 85%;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-
-.project-card:hover {
-    transform: scale(1.03);
-    box-shadow: 0 8px 20px rgba(0,0,0,0.3);
-}
-
-/* ========== SCROLL REVEAL DEFAULT STATE ========== */
-
-.reveal {
-    opacity: 0;
-    transform: translateY(30px);
-    transition: all 0.8s ease;
 }
