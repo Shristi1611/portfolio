@@ -2,14 +2,18 @@
     --hot-pink: #ff69b4;
     --soft-pink: #fbc2eb;
     --dark-pink: #c71585;
+    --white: #ffffff;
 }
 
 body {
     margin: 0; font-family: 'Poppins', sans-serif;
-    background: #fffafa; overflow-x: hidden;
+    color: var(--dark-pink); background: #fffafa;
+    overflow-x: hidden; cursor: none; /* Hide default cursor */
 }
 
-/* 1. CURSOR FIX: Hide until moved */
+/* ADVANCED UI ELEMENTS */
+#particle-canvas { position: fixed; top: 0; left: 0; z-index: -1; width: 100vw; height: 100vh; }
+
 #custom-cursor {
     width: 20px; height: 20px; border: 2px solid var(--hot-pink);
     border-radius: 50%; position: fixed; pointer-events: none;
@@ -17,22 +21,42 @@ body {
     opacity: 0; transition: opacity 0.3s ease;
 }
 
-#particle-canvas { position: fixed; top: 0; left: 0; z-index: -1; width: 100vw; height: 100vh; }
+/* NAVBAR */
+.navbar {
+    display: flex; justify-content: center; background: rgba(255, 255, 255, 0.9);
+    padding: 15px; position: sticky; top: 0; z-index: 1000; backdrop-filter: blur(10px);
+    border-bottom: 2px solid var(--soft-pink);
+}
 
-/* 2. CENTERED SKILLS ALIGNMENT */
+.nav-btn {
+    background: none; border: none; color: var(--hot-pink);
+    font-weight: 600; margin: 0 10px; cursor: pointer; padding: 8px 15px;
+    border-radius: 20px; transition: 0.3s;
+}
+
+.nav-btn.active, .nav-btn:hover { background: var(--hot-pink); color: white; }
+
+/* LAYOUT & CARDS */
+.container { max-width: 800px; margin: auto; padding: 20px; }
+.pink-card {
+    background: white; border-radius: 30px; padding: 40px; margin-top: 30px;
+    border: 1px solid var(--soft-pink); box-shadow: 0 10px 30px rgba(255, 105, 180, 0.1);
+}
+
+.card-header { display: flex; align-items: center; gap: 10px; margin-bottom: 20px; }
+.card-header h2 { font-family: 'Playfair Display', serif; }
+
+/* CENTERED SKILLS MATRIX */
 .centered-card { text-align: center; }
 .centered-header { justify-content: center; }
-
 .interactive-skill-container {
-    display: flex; flex-wrap: wrap; gap: 15px;
-    justify-content: center; /* Centers the tags */
+    display: flex; flex-wrap: wrap; gap: 15px; justify-content: center;
     max-width: 600px; margin: 0 auto;
 }
 
 .skill-tag-advanced {
-    padding: 12px 25px; background: white; border: 2px solid var(--soft-pink);
-    border-radius: 15px; cursor: help; position: relative; font-weight: 600;
-    transition: 0.3s; overflow: hidden;
+    padding: 12px 25px; border: 2px solid var(--soft-pink); border-radius: 15px;
+    position: relative; overflow: hidden; cursor: help; font-weight: 600;
 }
 
 .skill-tag-advanced::after {
@@ -44,20 +68,27 @@ body {
 
 .skill-tag-advanced:hover::after { transform: translateY(0); }
 
-/* 3. BACK TO TOP BUTTON */
-#backToTop {
-    display: none; position: fixed; bottom: 20px; right: 20px;
-    z-index: 99; font-size: 25px; border: none; outline: none;
-    background-color: var(--hot-pink); color: white; cursor: pointer;
-    padding: 10px; border-radius: 50%; box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+/* FORM & BUTTONS */
+.form-group { margin-bottom: 15px; text-align: left; }
+.form-input {
+    width: 100%; padding: 12px; border-radius: 12px;
+    border: 1px solid var(--soft-pink); outline: none;
+}
+.error-msg { color: #d63384; font-size: 0.75rem; font-weight: 600; }
+.hidden-message { display: none; padding: 20px; background: #fff0f6; border-radius: 20px; text-align: center; }
+.hidden-message.visible { display: block; animation: popIn 0.4s ease; }
+
+.view-project-btn {
+    width: 100%; padding: 12px; background: var(--hot-pink);
+    color: white; border: none; border-radius: 12px; font-weight: bold; cursor: pointer;
 }
 
-/* NAVBAR & OTHER STYLES (Same as before) */
-.navbar { display: flex; justify-content: center; background: white; padding: 15px; position: sticky; top: 0; z-index: 1000; }
-.nav-btn { background: none; border: none; color: var(--hot-pink); font-weight: 600; margin: 0 10px; cursor: pointer; }
-.nav-btn.active { color: var(--dark-pink); text-decoration: underline; }
-.container { max-width: 800px; margin: auto; padding: 20px; }
-.pink-card { background: white; border-radius: 30px; padding: 40px; border: 1px solid var(--soft-pink); margin-top: 20px; }
-.card-header { display: flex; align-items: center; gap: 10px; margin-bottom: 20px; }
+#backToTop {
+    display: none; position: fixed; bottom: 20px; right: 20px;
+    background: var(--hot-pink); border: none; padding: 10px;
+    border-radius: 50%; font-size: 20px; color: white; cursor: pointer;
+}
+
+/* PROFILE */
 .profile-pic { width: 180px; height: 180px; border-radius: 50%; border: 4px solid var(--hot-pink); }
-.signature { font-family: 'Playfair Display', serif; font-size: 3rem; color: var(--dark-pink); }
+.signature { font-family: 'Playfair Display', serif; font-size: 3.5rem; margin: 10px 0; }
