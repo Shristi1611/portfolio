@@ -4,66 +4,68 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Shristi Sinha | Portfolio</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
 <div class="container">
 
-    <!-- HERO SECTION -->
     <header class="hero">
         <img src="images.jpeg" alt="Shristi Sinha" class="profile-pic">
         <h1>Shristi Sinha</h1>
-        <p class="tagline">Computer Vision Enthusiast | Java Developer</p>
+        <p class="tagline">
+            <span id="typing"></span><span class="cursor">|</span>
+        </p>
     </header>
 
-    <!-- ABOUT SECTION -->
-    <section class="card">
+    <section class="card reveal">
         <h2>About Me</h2>
         <p>
-            Passionate Computer Vision enthusiast and Java developer
+            Passionate Computer Vision enthusiast and Java developer 
             who enjoys building intelligent systems and impactful applications.
         </p>
     </section>
 
-    <!-- SKILLS SECTION -->
-    <section class="card">
+    <section class="card reveal">
         <h2>Skills</h2>
-
         <div class="skill">
             <p>Java</p>
             <div class="bar"><div class="progress" style="width:85%"></div></div>
         </div>
-
         <div class="skill">
             <p>Python</p>
             <div class="bar"><div class="progress" style="width:80%"></div></div>
         </div>
-
         <div class="skill">
             <p>Computer Vision</p>
             <div class="bar"><div class="progress" style="width:75%"></div></div>
         </div>
-
     </section>
 
-    <!-- PROJECTS SECTION -->
-    <section class="card">
+    <section class="card reveal">
         <h2>Projects</h2>
-
         <div class="project-card">
             <h3>PCOD Management App</h3>
             <p>AI-powered health tracking system with intelligent recommendations.</p>
         </div>
-
         <div class="project-card">
             <h3>Image Processing Tool</h3>
             <p>Built using Python & OpenCV for feature extraction.</p>
         </div>
+    </section>
 
+    <section class="card reveal">
+        <h2>Connect With Me</h2>
+        <div class="social-links">
+            <a href="#" class="social-icon"><i class="fab fa-github"></i> GitHub</a>
+            <a href="#" class="social-icon"><i class="fab fa-linkedin"></i> LinkedIn</a>
+            <a href="mailto:shristi@example.com" class="social-icon"><i class="fas fa-envelope"></i> Email</a>
+        </div>
     </section>
 
 </div>
 
+<script src="script.js"></script>
 </body>
 </html>
