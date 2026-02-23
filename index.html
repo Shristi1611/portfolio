@@ -3,18 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Shristi Sinha | Computer Science & Style</title>
+    <title>Shristi Sinha | Software Engineer</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-    <div class="pink-gradient-bg"></div>
+    <div id="custom-cursor"></div>
+    <canvas id="particle-canvas"></canvas>
 
     <nav class="navbar">
         <button class="nav-btn active" onclick="openTab(event, 'home')">Home</button>
-        <button class="nav-btn" onclick="openTab(event, 'about')">Resume & Bio</button>
+        <button class="nav-btn" onclick="openTab(event, 'about')">Education</button>
         <button class="nav-btn" onclick="openTab(event, 'skills')">Expertise</button>
         <button class="nav-btn" onclick="openTab(event, 'projects')">Portfolio</button>
     </nav>
@@ -22,12 +23,16 @@
     <div class="container">
         <div id="home" class="tab-content active">
             <header class="hero">
-               
                 <div class="profile-frame">
                     <img src="images.jpeg" alt="Shristi Sinha" class="profile-pic">
                 </div>
                 <h1 class="signature">Shristi Sinha</h1>
                 <p class="tagline"><span id="typing"></span><span class="cursor">|</span></p>
+                <div class="hero-socials">
+                    <a href="#"><i class="fab fa-github"></i></a>
+                    <a href="#"><i class="fab fa-linkedin"></i></a>
+                    <a href="#"><i class="fas fa-envelope"></i></a>
+                </div>
             </header>
         </div>
 
@@ -35,21 +40,24 @@
             <section class="pink-card">
                 <div class="card-header">
                     <span class="bow-small">🎀</span>
-                    <h2>Education & Background</h2>
+                    <h2>Education & Academic Journey</h2>
                 </div>
-                <div class="bio-text">
-                    <p><strong>B.Tech in Computer Science & Engineering</strong></p>
-                    <p>I am a dedicated engineer who believes that technical prowess and personal style aren't mutually exclusive. My academic journey is fueled by a passion for Artificial Intelligence, where I maintain a high standard of excellence in software architecture and machine learning research.</p>
-                    
-                    <h3>Academic Details</h3>
+                <div class="timeline-item">
+                    <h3>Bachelor of Technology (B.Tech)</h3>
+                    <p class="sub-detail">Computer Science & Engineering | 2022 - 2026</p>
+                    <p>Focusing on the intersection of high-performance computing and artificial intelligence. My coursework includes Database Management, Theory of Computation, and Advanced AI Algorithms.</p>
+                </div>
+                <div class="timeline-item">
+                    <h3>Core Technical Focus</h3>
                     <ul class="pink-list">
-                        <li><strong>Major:</strong> Computer Science & Engineering</li>
-                        <li><strong>Specialization:</strong> AI & Machine Learning Frameworks</li>
-                        <li><strong>Thesis Interest:</strong> Intelligent Health Recommendations & CV</li>
+                        <li><strong>Computer Vision:</strong> Image segmentation, feature extraction, and real-time processing.</li>
+                        <li><strong>Software Engineering:</strong> Mastery of Multithreading in Java and memory management in C++.</li>
+                        <li><strong>App Development:</strong> Crafting cross-platform experiences using Flutter and Dart.</li>
                     </ul>
-
-                    <h3>Beyond the Code (Hobbies)</h3>
-                    <p>When I'm not optimizing algorithms, you can find me exploring <strong>Digital Photography</strong>, contributing to <strong>Open Source</strong>, or deep-diving into <strong>Fitness Analytics</strong>. I am passionate about wellness tracking—keeping a close eye on my health goals (155cm / 53kg) through data-driven insights.</p>
+                </div>
+                <div class="timeline-item">
+                    <h3>Interests & Hobbies</h3>
+                    <p>I believe in a balanced life. When I'm not coding, I am a <strong>Digital Photographer</strong> capturing street life, an <strong>Open Source contributor</strong>, and a <strong>fitness enthusiast</strong> (staying active at 155cm / 53kg).</p>
                 </div>
             </section>
         </div>
@@ -58,28 +66,17 @@
             <section class="pink-card">
                 <div class="card-header">
                     <span class="bow-small">🎀</span>
-                    <h2>Technical Expertise</h2>
+                    <h2>Interactive Skills Matrix</h2>
                 </div>
-                
-                <div class="skill-group">
-                    <h3>The Languages</h3>
-                    <div class="skill-tag">Java (Multithreading)</div>
-                    <div class="skill-tag">C++</div>
-                    <div class="skill-tag">Python</div>
-                </div>
-
-                <div class="skill-group">
-                    <h3>AI & CV</h3>
-                    <div class="skill-tag">Computer Vision (CV)</div>
-                    <div class="skill-tag">Machine Learning (ML)</div>
-                    <div class="skill-tag">OpenCV</div>
-                </div>
-
-                <div class="skill-group">
-                    <h3>Development & Tools</h3>
-                    <div class="skill-tag">Flutter App Dev</div>
-                    <div class="skill-tag">Excel Data Analysis</div>
-                    <div class="skill-tag">Software Design</div>
+                <p style="text-align: center; margin-bottom: 20px;">Hover over each skill to see my specialization!</p>
+                <div class="interactive-skill-container">
+                    <div class="skill-tag-advanced" data-detail="Multithreading, JVM, OOPs">Java</div>
+                    <div class="skill-tag-advanced" data-detail="OpenCV, Image Processing">Computer Vision</div>
+                    <div class="skill-tag-advanced" data-detail="Neural Nets, TensorFlow">ML</div>
+                    <div class="skill-tag-advanced" data-detail="Widget UI, State Management">Flutter</div>
+                    <div class="skill-tag-advanced" data-detail="STL, Memory Management">C++</div>
+                    <div class="skill-tag-advanced" data-detail="Data Cleaning, Pivot Tables">Excel</div>
+                    <div class="skill-tag-advanced" data-detail="Version Control, Branching">Git</div>
                 </div>
             </section>
         </div>
@@ -88,15 +85,31 @@
             <section class="pink-card">
                 <div class="card-header">
                     <span class="bow-small">🎀</span>
-                    <h2>Portfolio</h2>
+                    <h2>Featured Portfolio</h2>
                 </div>
-                <div class="project-item">
-                    <h3>PCOD Management App</h3>
-                    <p>A sophisticated mobile application built with **Flutter** and **ML** logic to help women track and manage health metrics through intelligent AI-driven feedback.</p>
+                
+                <div class="project-card-premium">
+                    <div class="project-info">
+                        <h3>PCOD Management App</h3>
+                        <span class="tech-pill">Flutter</span> <span class="tech-pill">ML</span>
+                        <p>Designed and developed an AI-driven health tracking application. The system uses Machine Learning to analyze user-input data and provide intelligent lifestyle and dietary recommendations.</p>
+                        <ul class="pink-list">
+                            <li>Integrated real-time health metric monitoring.</li>
+                            <li>Implemented predictive algorithms for cycle tracking.</li>
+                        </ul>
+                    </div>
                 </div>
-                <div class="project-item">
-                    <h3>CV Image Processor</h3>
-                    <p>Utilizing **Python** and **C++** logic to perform real-time feature extraction with high-speed **Multithreading** capabilities.</p>
+
+                <div class="project-card-premium">
+                    <div class="project-info">
+                        <h3>Real-time CV Image Processor</h3>
+                        <span class="tech-pill">C++</span> <span class="tech-pill">Python</span> <span class="tech-pill">OpenCV</span>
+                        <p>A high-speed image processing tool utilizing multithreading to perform feature extraction on live video streams without latency.</p>
+                        <ul class="pink-list">
+                            <li>Optimized OpenCV pipelines for lower CPU usage.</li>
+                            <li>Applied Multithreading to handle concurrent frame analysis.</li>
+                        </ul>
+                    </div>
                 </div>
             </section>
         </div>
@@ -105,4 +118,3 @@
     <script src="script.js"></script>
 </body>
 </html>
-
