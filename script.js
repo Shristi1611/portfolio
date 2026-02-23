@@ -99,3 +99,4 @@ function type() {
     else { setTimeout(type, 100); }
 }
 document.addEventListener("DOMContentLoaded", type);
+
