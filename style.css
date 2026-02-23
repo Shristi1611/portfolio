@@ -4,27 +4,23 @@
     --dark-pink: #c71585;
 }
 
+* { box-sizing: border-box; }
+
 body {
     margin: 0; font-family: 'Poppins', sans-serif;
-    background: #fffafa; text-align: center;
-    cursor: none !important; /* This hides the arrow, we must show the bow via JS */
+    color: var(--dark-pink); background: #fffafa;
+    overflow-x: hidden; text-align: center;
+    cursor: none !important; /* Hides system cursor */
 }
 
-/* TYPING CURSOR BLINK */
-.typing-cursor {
-    color: var(--hot-pink);
-    font-weight: bold;
-    animation: blink 0.7s infinite;
-}
-@keyframes blink { 50% { opacity: 0; } }
-
-/* BOW CURSOR */
+/* SHINING BOW CURSOR */
 #custom-cursor {
     position: fixed; width: 40px; height: 25px;
     pointer-events: none; z-index: 9999;
     opacity: 0; display: flex; align-items: center; justify-content: center;
     transform: translate(-50%, -50%);
 }
+
 .bow-left, .bow-right {
     width: 18px; height: 18px;
     background: linear-gradient(45deg, #ff69b4, #ffffff, #ff69b4, #ff1493);
@@ -32,6 +28,7 @@ body {
     animation: shine-bow 3s infinite linear;
     clip-path: polygon(0% 0%, 100% 50%, 0% 100%);
 }
+
 .bow-right { transform: rotate(180deg); margin-left: -4px; }
 .bow-center { width: 6px; height: 6px; background: white; border-radius: 50%; position: absolute; box-shadow: 0 0 8px white; }
 
@@ -41,8 +38,32 @@ body {
     100% { background-position: 0% 50%; }
 }
 
-/* CARDS & OTHER STYLES */
+/* TYPING CURSOR */
+.typing-cursor { color: var(--hot-pink); font-weight: bold; animation: blink 0.7s infinite; }
+@keyframes blink { 50% { opacity: 0; } }
+
+/* LAYOUT */
+#particle-canvas { position: fixed; top: 0; left: 0; z-index: -1; width: 100vw; height: 100vh; }
+.navbar { display: flex; justify-content: center; padding: 15px; background: rgba(255,255,255,0.8); border-bottom: 2px solid var(--soft-pink); position: sticky; top: 0; z-index: 100; }
+.nav-btn { background: none; border: none; color: var(--hot-pink); font-weight: 600; margin: 0 10px; cursor: none !important; }
+.nav-btn.active { color: var(--dark-pink); text-decoration: underline; }
+
 .container { max-width: 800px; margin: auto; padding: 20px; }
-.hero { padding: 50px 0; }
+.hero { padding: 60px 0; }
 .profile-pic { width: 180px; height: 180px; border-radius: 50%; border: 4px solid var(--hot-pink); object-fit: cover; }
-.signature { font-family: 'Playfair Display', serif; font-size: 3rem; color: var(--dark-pink); }
+.signature { font-family: 'Playfair Display', serif; font-size: 3.5rem; margin: 10px 0; }
+.hero-socials { display: flex; justify-content: center; gap: 20px; font-size: 1.5rem; }
+.hero-socials a { color: var(--hot-pink); }
+
+.pink-card { background: white; border-radius: 25px; padding: 30px; border: 1px solid var(--soft-pink); margin-top: 20px; }
+.interactive-skill-container { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; margin-top: 15px; }
+.skill-tag-advanced { padding: 8px 15px; border: 1px solid var(--soft-pink); border-radius: 10px; position: relative; overflow: hidden; font-weight: 600; }
+.skill-tag-advanced::after { content: attr(data-detail); position: absolute; top:0; left:0; width:100%; height:100%; background: var(--hot-pink); color: white; display:flex; align-items:center; justify-content:center; font-size:0.7rem; transform: translateY(100%); transition: 0.3s; }
+.skill-tag-advanced:hover::after { transform: translateY(0); }
+
+.advanced-form { display: flex; flex-direction: column; gap: 10px; max-width: 400px; margin: auto; }
+.form-input { padding: 10px; border-radius: 8px; border: 1px solid var(--soft-pink); }
+.submit-btn { padding: 10px; background: var(--hot-pink); color: white; border: none; border-radius: 8px; }
+.error-msg { color: var(--dark-pink); font-size: 0.7rem; }
+.hidden-message { display: none; padding: 15px; color: green; }
+.hidden-message.visible { display: block; }
