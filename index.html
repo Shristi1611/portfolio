@@ -1,100 +1,65 @@
 <!DOCTYPE html>
-<html>
-
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <title>Shristi Sinha | Portfolio</title>
     <link rel="stylesheet" href="style.css">
 </head>
-
 <body>
 
+<div class="container">
+
     <!-- HERO SECTION -->
-    <header class="hero">
-        <img src="images.jpeg" class="profile-pic">
+    <header class="hero reveal">
+        <img src="images.jpeg" alt="Shristi Sinha" class="profile-pic">
         <h1>Shristi Sinha</h1>
-        <p class="tagline">Computer Vision Enthusiast | Java Developer</p>
+        <p class="tagline"><span id="typing"></span></p>
     </header>
 
-
-    <!-- ABOUT SECTION -->
-    <section id="about">
+    <!-- ABOUT -->
+    <section class="card reveal">
         <h2>About Me</h2>
-        <p class="center-text">
-            I am a passionate developer interested in Computer Vision and Java-based
-            applications. I enjoy building real-world projects that combine logic,
-            creativity and problem-solving.
+        <p>
+            Passionate Computer Vision enthusiast and Java developer 
+            who loves building intelligent and visually impactful applications.
         </p>
     </section>
 
-
-    <!-- SKILLS SECTION -->
-    <section id="skills">
+    <!-- SKILLS -->
+    <section class="card reveal">
         <h2>Skills</h2>
-        <ul class="skills-list">
-            <li>Python</li>
-            <li>OpenCV</li>
-            <li>Java</li>
-            <li>HTML, CSS, JavaScript</li>
-            <li>Multithreading & Collections</li>
-        </ul>
+        <div class="skill">
+            <p>Java</p>
+            <div class="bar"><div class="progress" style="width:85%"></div></div>
+        </div>
+        <div class="skill">
+            <p>Python</p>
+            <div class="bar"><div class="progress" style="width:80%"></div></div>
+        </div>
+        <div class="skill">
+            <p>Computer Vision</p>
+            <div class="bar"><div class="progress" style="width:75%"></div></div>
+        </div>
     </section>
 
-
-    <!-- PROJECTS SECTION -->
-    <section id="projects">
+    <!-- PROJECTS -->
+    <section class="card reveal">
         <h2>Projects</h2>
 
         <div class="project-card">
-            <h3>Real-Time Face Detector</h3>
-            <p>
-                A computer vision application that detects human faces in real time
-                using webcam input and Haar Cascade classifier.
-            </p>
-            <p><strong>Tech Used:</strong> Python, OpenCV</p>
+            <h3>PCOD Management App</h3>
+            <p>AI-powered health tracking system with intelligent recommendations.</p>
         </div>
 
         <div class="project-card">
-            <h3>Invisibility Cloak Effect</h3>
-            <p>
-                A real-time computer vision system that creates an invisibility
-                illusion by masking a selected color and replacing it with the background.
-            </p>
-            <p><strong>Tech Used:</strong> Python, OpenCV, NumPy</p>
+            <h3>Image Processing Tool</h3>
+            <p>Built using Python & OpenCV for feature extraction.</p>
         </div>
+
     </section>
 
+</div>
 
-    <!-- CONTACT SECTION -->
-    <section id="contact">
-        <h2>Contact / Feedback</h2>
-
-        <form id="feedbackForm">
-            <input type="text" id="name" placeholder="Enter your name">
-            <input type="email" id="email" placeholder="Enter your email">
-            <textarea id="message" placeholder="Enter your feedback"></textarea>
-            <button type="submit">Submit</button>
-        </form>
-
-        <p id="successMessage"></p>
-
-        <div id="feedbackDisplay">
-            <h3>Submitted Feedback</h3>
-        </div>
-    </section>
-
-
-    <!-- FOOTER -->
-    <footer>
-        <p>© 2026 Shristi Sinha | All Rights Reserved</p>
-    </footer>
-
-    <script src="script.js"></script>
-
+<script src="script.js"></script>
 </body>
-
 </html>
-
-
-
-
