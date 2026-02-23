@@ -1,37 +1,124 @@
-<div class="hero-socials">
-    <a href="#"><i class="fab fa-github"></i></a>
-    <a href="#"><i class="fab fa-linkedin"></i></a>
-    <a href="mailto:shristisinha@gmail.com"><i class="fas fa-envelope"></i></a>
-</div>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shristi Sinha | Software Engineer</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
 
-<div id="contact" class="tab-content">
-    <section class="pink-card">
-        <div class="card-header centered-header">
-            <span class="bow-small">🎀</span>
-            <h2>Leave a Note</h2>
+    <div id="custom-cursor"></div>
+    <canvas id="particle-canvas"></canvas>
+
+    <nav class="navbar">
+        <button class="nav-btn active" onclick="openTab(event, 'home')">Home</button>
+        <button class="nav-btn" onclick="openTab(event, 'about')">Education</button>
+        <button class="nav-btn" onclick="openTab(event, 'skills')">Expertise</button>
+        <button class="nav-btn" onclick="openTab(event, 'projects')">Portfolio</button>
+        <button class="nav-btn" onclick="openTab(event, 'contact')">Contact</button>
+    </nav>
+
+    <div class="container">
+        <div id="home" class="tab-content active">
+            <header class="hero">
+                <div class="profile-frame">
+                    <img src="images.jpeg" alt="Shristi Sinha" class="profile-pic">
+                </div>
+                <h1 class="signature">Shristi Sinha</h1>
+                <p class="tagline"><span id="typing"></span><span class="cursor">|</span></p>
+                <div class="hero-socials">
+                    <a href="https://github.com" target="_blank"><i class="fab fa-github"></i></a>
+                    <a href="https://linkedin.com" target="_blank"><i class="fab fa-linkedin"></i></a>
+                    <a href="mailto:shristisinha@gmail.com"><i class="fas fa-envelope"></i></a>
+                </div>
+            </header>
         </div>
-        
-        <form id="feedbackForm" class="advanced-form">
-            <div class="form-group">
-                <input type="text" id="userName" placeholder="Your Name" class="form-input">
-                <span id="nameError" class="error-msg"></span>
-            </div>
-            
-            <div class="form-group">
-                <input type="email" id="userEmail" placeholder="Your Email" class="form-input">
-                <span id="emailError" class="error-msg"></span>
-            </div>
 
-            <div class="form-group">
-                <textarea id="userMessage" placeholder="Write your feedback here..." class="form-input" rows="4"></textarea>
-            </div>
-
-            <button type="submit" class="view-project-btn">Send Message 💌</button>
-        </form>
-
-        <div id="successMessage" class="hidden-message">
-            <p>What, like it's hard? Message sent successfully! 🎀</p>
-            <p style="font-size: 0.8rem;">I'll get back to you at shristisinha@gmail.com</p>
+        <div id="about" class="tab-content">
+            <section class="pink-card">
+                <div class="card-header">
+                    <span class="bow-small">🎀</span>
+                    <h2>Education & Background</h2>
+                </div>
+                <div class="timeline-item">
+                    <h3>B.Tech in Computer Science & Engineering</h3>
+                    <p class="sub-detail">Expected 2026</p>
+                    <p>Focusing on AI-driven architectures and high-performance computing. I maintain a disciplined lifestyle, balancing intense coding sessions with health goals (155cm / 53kg).</p>
+                </div>
+                <div class="timeline-item">
+                    <h3>Hobbies</h3>
+                    <p>Digital Photography, Open Source, and Fitness Tracking.</p>
+                </div>
+            </section>
         </div>
-    </section>
-</div>
+
+        <div id="skills" class="tab-content">
+            <section class="pink-card centered-card">
+                <div class="card-header centered-header">
+                    <span class="bow-small">🎀</span>
+                    <h2>Interactive Skills Matrix</h2>
+                </div>
+                <div class="interactive-skill-container">
+                    <div class="skill-tag-advanced" data-detail="Multithreading, JVM, OOPs">Java</div>
+                    <div class="skill-tag-advanced" data-detail="OpenCV, Feature Extraction">CV</div>
+                    <div class="skill-tag-advanced" data-detail="Neural Nets, TensorFlow">ML</div>
+                    <div class="skill-tag-advanced" data-detail="State Management, UI/UX">Flutter</div>
+                    <div class="skill-tag-advanced" data-detail="STL, Systems Programming">C++</div>
+                    <div class="skill-tag-advanced" data-detail="Data Analysis, Pivots">Excel</div>
+                </div>
+            </section>
+        </div>
+
+        <div id="projects" class="tab-content">
+            <section class="pink-card">
+                <div class="card-header">
+                    <span class="bow-small">🎀</span>
+                    <h2>Featured Portfolio</h2>
+                </div>
+                <div class="project-card-premium">
+                    <h3>PCOD Management App</h3>
+                    <p>A Flutter application utilizing ML to provide intelligent health recommendations based on user data.</p>
+                </div>
+                <div class="project-card-premium">
+                    <h3>CV Image Processor</h3>
+                    <p>High-speed tool developed in C++ and Python using OpenCV and Multithreading.</p>
+                </div>
+            </section>
+        </div>
+
+        <div id="contact" class="tab-content">
+            <section class="pink-card">
+                <div class="card-header centered-header">
+                    <span class="bow-small">🎀</span>
+                    <h2>Leave a Note</h2>
+                </div>
+                <form id="feedbackForm" class="advanced-form">
+                    <div class="form-group">
+                        <input type="text" id="userName" placeholder="Your Name" class="form-input">
+                        <span id="nameError" class="error-msg"></span>
+                    </div>
+                    <div class="form-group">
+                        <input type="email" id="userEmail" placeholder="Your Email" class="form-input">
+                        <span id="emailError" class="error-msg"></span>
+                    </div>
+                    <div class="form-group">
+                        <textarea id="userMessage" placeholder="Your Message..." class="form-input" rows="4"></textarea>
+                    </div>
+                    <button type="submit" class="view-project-btn">Send Message 💌</button>
+                </form>
+                <div id="successMessage" class="hidden-message">
+                    <p>What, like it's hard? Message sent successfully! 🎀</p>
+                    <p style="font-size: 0.8rem;">I'll reply to you at shristisinha@gmail.com</p>
+                </div>
+            </section>
+        </div>
+    </div>
+
+    <button id="backToTop">🎀</button>
+
+    <script src="script.js"></script>
+</body>
+</html>
