@@ -1,5 +1,5 @@
 window.onload = () => {
-    // --- CURSOR ---
+    // --- CURSOR LOGIC ---
     const cursor = document.getElementById('custom-cursor');
     document.addEventListener('mousemove', (e) => {
         cursor.style.opacity = "1";
@@ -7,7 +7,7 @@ window.onload = () => {
         cursor.style.top = e.clientY + 'px';
     });
 
-    // --- TYPING ---
+    // --- TYPING EFFECT ---
     const typingElement = document.getElementById("typing");
     const texts = ["Software Engineer 🎀", "ML & CV Specialist", "Java Developer"];
     let count = 0, index = 0, currentText = "", letter = "";
@@ -26,7 +26,7 @@ window.onload = () => {
     }
     type();
 
-    // --- PARTICLES ---
+    // --- PARTICLE EFFECT ---
     const canvas = document.getElementById('particle-canvas');
     const ctx = canvas.getContext('2d');
     let particles = [];
