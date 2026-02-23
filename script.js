@@ -1,25 +1,71 @@
-// 1. BOW CURSOR MOVEMENT
+// --- 1. TYPING EFFECT FIX ---
+const typingElement = document.getElementById("typing");
+const texts = ["Software Engineer 🎀", "ML & CV Specialist", "Java Developer"];
+let count = 0;
+let index = 0;
+let currentText = "";
+let letter = "";
+
+function type() {
+    if (count === texts.length) {
+        count = 0;
+    }
+    currentText = texts[count];
+    letter = currentText.slice(0, ++index);
+
+    if (typingElement) {
+        typingElement.textContent = letter;
+    }
+
+    if (letter.length === currentText.length) {
+        count++;
+        index = 0;
+        setTimeout(type, 2000); // Wait before starting next word
+    } else {
+        setTimeout(type, 100); // Speed of typing
+    }
+}
+
+// --- 2. BOW CURSOR FIX ---
 const cursor = document.getElementById('custom-cursor');
+
 document.addEventListener('mousemove', (e) => {
-    cursor.style.opacity = "1";
-    cursor.style.left = e.clientX + 'px';
-    cursor.style.top = e.clientY + 'px';
+    if (cursor) {
+        cursor.style.opacity = "1";
+        cursor.style.left = e.clientX + 'px';
+        cursor.style.top = e.clientY + 'px';
+    }
 });
 
-// 2. PARTICLE SYSTEM
+// --- 3. INITIALIZE EVERYTHING ---
+document.addEventListener("DOMContentLoaded", () => {
+    console.log("Portfolio Script Loaded! 🎀");
+    type(); // Start typing
+    initParticles(); // Start particles
+    animateParticles();
+});
+
+// --- 4. PARTICLE SYSTEM ---
 const canvas = document.getElementById('particle-canvas');
 const ctx = canvas.getContext('2d');
 let particles = [];
+
 function initParticles() {
-    canvas.width = window.innerWidth; canvas.height = window.innerHeight;
+    if (!canvas) return;
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
     particles = [];
     for(let i=0; i<40; i++) {
         particles.push({
-            x: Math.random()*canvas.width, y: Math.random()*canvas.height,
-            size: Math.random()*2+1, speedX: Math.random()*0.4-0.2, speedY: Math.random()*0.4-0.2
+            x: Math.random()*canvas.width,
+            y: Math.random()*canvas.height,
+            size: Math.random()*2+1,
+            speedX: Math.random()*0.4-0.2,
+            speedY: Math.random()*0.4-0.2
         });
     }
 }
+
 function animateParticles() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     ctx.fillStyle = 'rgba(255, 105, 180, 0.2)';
@@ -31,60 +77,17 @@ function animateParticles() {
     });
     requestAnimationFrame(animateParticles);
 }
-initParticles(); animateParticles();
 
-// 3. TAB SYSTEM
+// --- 5. TAB SYSTEM ---
 function openTab(evt, tabName) {
     let tabcontent = document.getElementsByClassName("tab-content");
-    for (let i = 0; i < tabcontent.length; i++) tabcontent[i].style.display = "none";
+    for (let i = 0; i < tabcontent.length; i++) {
+        tabcontent[i].style.display = "none";
+    }
     let navlinks = document.getElementsByClassName("nav-btn");
-    for (let i = 0; i < navlinks.length; i++) navlinks[i].classList.remove("active");
+    for (let i = 0; i < navlinks.length; i++) {
+        navlinks[i].classList.remove("active");
+    }
     document.getElementById(tabName).style.display = "block";
     evt.currentTarget.classList.add("active");
 }
-
-// 4. FORM VALIDATION & STORAGE
-const feedbackForm = document.getElementById('feedbackForm');
-if(feedbackForm) {
-    feedbackForm.addEventListener('submit', function(e) {
-        e.preventDefault();
-        const name = document.getElementById('userName').value.trim();
-        const email = document.getElementById('userEmail').value.trim();
-        const nameErr = document.getElementById('nameError');
-        const emailErr = document.getElementById('emailError');
-        
-        nameErr.textContent = ""; emailErr.textContent = "";
-        let isValid = true;
-
-        if (name === "") { nameErr.textContent = "Name required! 🎀"; isValid = false; }
-        if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { emailErr.textContent = "Invalid email!"; isValid = false; }
-
-        if (isValid) {
-            const data = { name, email, msg: document.getElementById('userMessage').value, date: new Date().toLocaleString() };
-            const existing = JSON.parse(localStorage.getItem('userFeedback')) || [];
-            existing.push(data);
-            localStorage.setItem('userFeedback', JSON.stringify(existing));
-            feedbackForm.style.display = "none";
-            document.getElementById('successMessage').classList.add('visible');
-        }
-    });
-}
-
-// 5. TYPING EFFECT
-const texts = ["Software Engineer 🎀", "ML & CV Specialist", "Java Developer"];
-let count = 0, index = 0;
-function type() {
-    if (count === texts.length) count = 0;
-    let currentText = texts[count];
-    let letter = currentText.slice(0, ++index);
-    document.getElementById("typing").textContent = letter;
-    if (letter.length === currentText.length) { count++; index = 0; setTimeout(type, 2000); }
-    else { setTimeout(type, 100); }
-}
-document.addEventListener("DOMContentLoaded", type);
-
-// 6. BACK TO TOP
-let topBtn = document.getElementById("backToTop");
-window.onscroll = () => { topBtn.style.display = (window.scrollY > 300) ? "block" : "none"; };
-topBtn.onclick = () => window.scrollTo({top: 0, behavior: 'smooth'});
-
