@@ -1,4 +1,3 @@
-/* Typing Effect */
 const texts = [
     "Computer Vision Enthusiast",
     "Java Developer",
@@ -17,6 +16,7 @@ function type() {
     }
 
     currentText = texts[count];
+    // Create the string letter by letter
     letter = currentText.slice(0, ++index);
 
     document.getElementById("typing").textContent = letter;
@@ -24,31 +24,11 @@ function type() {
     if (letter.length === currentText.length) {
         count++;
         index = 0;
-        setTimeout(type, 1200);
+        setTimeout(type, 2000); // Wait 2 seconds before next word
     } else {
-        setTimeout(type, 80);
+        setTimeout(type, 100);  // Typing speed (100ms)
     }
 }
 
-type();
-
-/* Scroll Reveal */
-const reveals = document.querySelectorAll('.reveal');
-
-window.addEventListener('scroll', () => {
-    reveals.forEach(element => {
-        const windowHeight = window.innerHeight;
-        const revealTop = element.getBoundingClientRect().top;
-
-        if (revealTop < windowHeight - 100) {
-            element.style.opacity = 1;
-            element.style.transform = "translateY(0)";
-        }
-    });
-});
-
-reveals.forEach(element => {
-    element.style.opacity = 0;
-    element.style.transform = "translateY(30px)";
-    element.style.transition = "all 0.8s ease";
-});
+// Start the typing effect when the page loads
+document.addEventListener("DOMContentLoaded", type);
