@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Shristi Sinha | Portfolio</title>
+    <title>Shristi Sinha | Software Engineer</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
@@ -20,7 +20,7 @@
 
     <nav class="navbar">
         <button class="nav-btn active" onclick="openTab(event, 'home')">Home</button>
-        <button class="nav-btn" onclick="openTab(event, 'about')">Education</button>
+        <button class="nav-btn" onclick="openTab(event, 'about')">About Me</button>
         <button class="nav-btn" onclick="openTab(event, 'skills')">Expertise</button>
         <button class="nav-btn" onclick="openTab(event, 'projects')">Portfolio</button>
         <button class="nav-btn" onclick="openTab(event, 'contact')">Contact</button>
@@ -37,7 +37,7 @@
                     <span id="typing"></span><span class="typing-cursor">|</span>
                 </p>
                 <div class="hero-socials">
-                    <a href="https://github.com" target="_blank"><i class="fab fa-github"></i></a>
+                    <a href="https://github.com/shristi1611" target="_blank"><i class="fab fa-github"></i></a>
                     <a href="https://linkedin.com" target="_blank"><i class="fab fa-linkedin"></i></a>
                     <a href="mailto:shristisinha@gmail.com"><i class="fas fa-envelope"></i></a>
                 </div>
@@ -48,11 +48,23 @@
             <section class="pink-card centered-content">
                 <div class="card-header centered-header">
                     <span class="bow-small">🎀</span>
-                    <h2>Education</h2>
+                    <h2>About Me</h2>
                 </div>
-                <h3>B.Tech in Computer Science</h3>
-                <p>Expected Graduation: 2026</p>
-                <p>Focus: AI, Computer Vision, and Java Architectures.</p>
+                <div class="bio-text">
+                    <p>I am a Software Engineering student driven by the intersection of <strong>Machine Learning</strong> and <strong>Computer Vision</strong>. I approach problem-solving with the same precision I apply to my personal discipline.</p>
+                    
+                    <hr class="soft-divider">
+                    
+                    <h3>Academic Profile</h3>
+                    <p><strong>B.Tech in Computer Science & Engineering</strong><br>
+                    <strong>GHRISTU University</strong> | Second Year</p>
+                    <p>Deepening my expertise in AI-driven architectures, Computer Vision algorithms, and high-performance Java development.</p>
+                    
+                    <hr class="soft-divider">
+
+                    <h3>Personal Engineering</h3>
+                    <p>I believe in a holistic approach to excellence. Beyond coding, I maintain a disciplined fitness regimen, staying optimized at <strong>53 kg</strong> and <strong>155 cm</strong>. Whether it's multithreading in C++ or tracking health metrics, I aim for peak performance.</p>
+                </div>
             </section>
         </div>
 
@@ -60,14 +72,15 @@
             <section class="pink-card centered-content">
                 <div class="card-header centered-header">
                     <span class="bow-small">🎀</span>
-                    <h2>Interactive Skills</h2>
+                    <h2>Technical Expertise</h2>
                 </div>
                 <div class="interactive-skill-container">
-                    <div class="skill-tag-advanced" data-detail="Multithreading, JVM">Java</div>
-                    <div class="skill-tag-advanced" data-detail="OpenCV, Python">CV</div>
-                    <div class="skill-tag-advanced" data-detail="Neural Nets">ML</div>
-                    <div class="skill-tag-advanced" data-detail="UI/UX, Dart">Flutter</div>
-                    <div class="skill-tag-advanced" data-detail="STL, C++">C++</div>
+                    <div class="skill-tag-advanced" data-detail="Multithreading, JVM, OOPs">Java</div>
+                    <div class="skill-tag-advanced" data-detail="OpenCV, Image Processing">CV</div>
+                    <div class="skill-tag-advanced" data-detail="Neural Nets, TensorFlow">ML</div>
+                    <div class="skill-tag-advanced" data-detail="State Management, UI/UX">Flutter</div>
+                    <div class="skill-tag-advanced" data-detail="STL, Memory Management">C++</div>
+                    <div class="skill-tag-advanced" data-detail="Advanced Data Analysis">Excel</div>
                 </div>
             </section>
         </div>
@@ -76,15 +89,19 @@
             <section class="pink-card centered-content">
                 <div class="card-header centered-header">
                     <span class="bow-small">🎀</span>
-                    <h2>Portfolio</h2>
+                    <h2>Detailed Portfolio</h2>
                 </div>
-                <div class="project-item">
+                
+                <div class="project-card-premium">
                     <h3>PCOD Management App</h3>
-                    <p>ML-based health tracking in Flutter.</p>
+                    <p class="project-meta">Flutter • Machine Learning • Healthcare</p>
+                    <p>Developed a mobile application to help users manage PCOD through AI-driven lifestyle recommendations. Integrated health tracking modules and predictive models to provide personalized insights based on biometric data.</p>
                 </div>
-                <div class="project-item">
+
+                <div class="project-card-premium">
                     <h3>CV Image Processor</h3>
-                    <p>Real-time C++ & OpenCV tool.</p>
+                    <p class="project-meta">C++ • OpenCV • Python</p>
+                    <p>Engineered a high-performance image processing tool capable of real-time feature extraction. Optimized for speed using Java Multithreading principles and C++ STL to ensure low-latency analysis of high-resolution video feeds.</p>
                 </div>
             </section>
         </div>
@@ -96,14 +113,21 @@
                     <h2>Leave a Note</h2>
                 </div>
                 <form id="feedbackForm" class="advanced-form">
-                    <input type="text" id="userName" placeholder="Name" class="form-input">
-                    <span id="nameError" class="error-msg"></span>
-                    <input type="email" id="userEmail" placeholder="Email" class="form-input">
-                    <span id="emailError" class="error-msg"></span>
-                    <textarea id="userMessage" placeholder="Message" class="form-input" rows="3"></textarea>
-                    <button type="submit" class="submit-btn">Send 💌</button>
+                    <div class="form-group">
+                        <input type="text" id="userName" placeholder="Your Name" class="form-input">
+                        <span id="nameError" class="error-msg"></span>
+                    </div>
+                    <div class="form-group">
+                        <input type="email" id="userEmail" placeholder="Your Email" class="form-input">
+                        <span id="emailError" class="error-msg"></span>
+                    </div>
+                    <textarea id="userMessage" placeholder="Your Message..." class="form-input" rows="4"></textarea>
+                    <button type="submit" class="submit-btn">Send Message 💌</button>
                 </form>
-                <div id="successMessage" class="hidden-message">Success! Feedback Saved.</div>
+                <div id="successMessage" class="hidden-message">
+                    <p>Message sent successfully! 🎀</p>
+                    <p style="font-size: 0.8rem;">I'll reply to you at shristisinha@gmail.com</p>
+                </div>
             </section>
         </div>
     </div>
