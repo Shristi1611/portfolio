@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Resume · Shristi Sinha</title>
+<meta name="robots" content="noindex">
+<style>
+  :root { --acc: #5b3fe0; }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: #1b1c24; font-family: "Helvetica Neue", Arial, sans-serif; color: #111; }
+  .toolbar { position: sticky; top: 0; z-index: 5; display: flex; flex-wrap: wrap; gap: .6rem 1rem; align-items: center; justify-content: center; padding: .8rem 1rem; background: #090a0f; color: #f4f3ef; font-size: .85rem; }
+  .toolbar a, .toolbar button, .toolbar select { font: inherit; color: #f4f3ef; background: transparent; border: 1px solid rgba(244,243,239,.35); border-radius: 999px; padding: .35rem .9rem; cursor: pointer; text-decoration: none; }
+  .toolbar select option { background: #12131a; }
+  .toolbar button { background: #7c5cff; border-color: #7c5cff; }
+  .paper { width: 210mm; max-width: 100%; margin: 18px auto; background: #fff; padding: 13mm 15mm; font-size: 9.6pt; line-height: 1.38; }
+  h1 { margin: 0; text-align: center; font: 400 25pt Georgia, "Times New Roman", serif; font-variant: small-caps; letter-spacing: .02em; }
+  .contact { text-align: center; font-size: 9pt; margin: 2px 0 8px; color: #222; }
+  .contact span + span::before { content: "  ·  "; color: #888; }
+  .contact a { color: inherit; text-decoration: none; }
+  h2 { margin: 11px 0 5px; padding-bottom: 1px; font: 700 10.5pt Georgia, "Times New Roman", serif; font-variant: small-caps; letter-spacing: .04em; border-bottom: 1px solid #111; }
+  .row { display: flex; justify-content: space-between; gap: 1rem; }
+  .row b { font-weight: 700; }
+  .row i, .muted { color: #333; }
+  .summary { margin: 0; }
+  p { margin: 0; }
+  .skill { margin: 1px 0; }
+  .skill b { font-weight: 700; }
+  .proj { margin-top: 6px; break-inside: avoid; }
+  .proj .stack { font-style: italic; color: #333; }
+  ul { margin: 2px 0 0; padding-left: 15px; }
+  li { margin: 0 0 1px; }
+  @media print {
+    body { background: #fff; }
+    .toolbar { display: none; }
+    .paper { width: auto; margin: 0; padding: 0; box-shadow: none; font-size: 8.9pt; line-height: 1.3; }
+    h1 { font-size: 22pt; }
+    h2 { margin: 8px 0 4px; }
+    @page { size: A4; margin: 10mm 13mm; }
+  }
+</style>
+</head>
+<body>
+
+<div class="toolbar">
+  <a href="index.html">← Portfolio</a>
+  <label>Resume for <select id="rsel"></select></label>
+  <button onclick="window.print()">Save as PDF / Print</button>
+</div>
+
+<article class="paper" id="paper"></article>
+
+<script src="content.js"></script>
+<script>
+(function () {
+  const S = SITE;
+  const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+  const keys = Object.keys(S.profiles);
+  const q = new URLSearchParams(location.search).get('view');
+  let key = q && S.profiles[q] ? q : 'generic';
+
+  const sel = document.getElementById('rsel');
+  sel.innerHTML = keys.map((k) => '<option value="' + k + '">' + esc(S.profiles[k].label) + '</option>').join('');
+  sel.addEventListener('change', () => {
+    key = sel.value;
+    history.replaceState(null, '', '?view=' + key);
+    draw();
+  });
+
+  const pick = (m, k) => (m && (m[k] || m.all)) || null;
+
+  function draw() {
+    sel.value = key;
+    const P = S.profiles[key];
+    document.title = 'Resume · ' + S.name + ' · ' + P.label;
+    const ids = P.resumeProjects || P.projects;
+    const nb = P.resumeBullets || 3;
+
+    const projects = ids.map((id) => {
+      const p = S.projects[id];
+      const sub = pick(p.subtitle, key);
+      const b = (pick(p.bullets, key) || []).slice(0, nb);
+      return '<div class="proj"><div class="row"><span><b>' + esc(p.title + (sub ? ': ' + sub : '')) + '</b> <span class="stack">| ' + esc(p.stack.join(', ')) + '</span></span><b>' + esc(p.year) + '</b></div><ul>' + b.map((x) => '<li>' + esc(x) + '</li>').join('') + '</ul></div>';
+    }).join('');
+
+    const skills = P.skills.map((g) => '<p class="skill"><b>' + esc(g.group) + ':</b> ' + esc(g.items.join(', ')) + '</p>').join('');
+
+    const acts = [
+      'NPTEL Certifications: Deep Learning; Programming in Java',
+      'India Runs Hackathon 2026 (Redrob AI × Hack2Skill): Track 1 (Data & AI Challenge) and Track 2 (Ideathon); submitted',
+      'Kaggle: Biohub: Cell Tracking During Development; applying ML to detect and track cells in 3D microscopy data',
+      'Open source: contributed Python code to open-source repositories through issues and pull requests',
+      'Public speaking, reading and writing: inter-school competitions; avid reader and aspiring writer'
+    ];
+
+    document.getElementById('paper').innerHTML =
+      '<h1>' + esc(S.name) + '</h1>' +
+      '<div class="contact"><span><a href="mailto:' + esc(S.email) + '">' + esc(S.email) + '</a></span><span><a href="' + esc(S.linkedin) + '">' + esc(S.linkedin.replace('https://www.', '')) + '</a></span><span><a href="' + esc(S.github) + '">' + esc(S.github.replace('https://', '')) + '</a></span></div>' +
+      '<h2>Summary</h2><p class="summary">' + esc(P.summary) + '</p>' +
+      '<h2>Education</h2>' +
+      '<div class="row"><b>GH Raisoni International Skill Tech University</b><b>Nov 2023 – Present</b></div>' +
+      '<div class="row"><i>Bachelor of Technology in Computer Science</i><i>CGPA: 9.18 / 10</i></div>' +
+      '<div class="row" style="margin-top:3px"><b>Kerala Public School, Jamshedpur</b><b>Graduated 2023</b></div>' +
+      '<div class="row"><i>Higher Secondary Certificate (Class XII)</i><span></span></div>' +
+      '<h2>Skills</h2>' + skills +
+      '<p class="skill"><b>Languages:</b> English (Professional), Hindi (Native)</p>' +
+      '<h2>Projects</h2>' + projects +
+      '<h2>Certifications, Achievements &amp; Activities</h2><ul>' + acts.map((a) => '<li>' + esc(a) + '</li>').join('') + '</ul>';
+  }
+  draw();
+})();
+</script>
+</body>
+</html>
