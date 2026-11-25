@@ -32,7 +32,7 @@ const SITE = {
   experience: [
     { year: "Current", title: "B.Tech Computer Science", org: "GH Raisoni International Skill Tech University · Nov 2023 to present", text: "CGPA 9.18 / 10." },
     { year: "2026", title: "India Runs Hackathon", org: "Redrob AI × Hack2Skill", text: "Submitted to Track 1 (Data & AI Challenge) and Track 2 (Ideathon). Built an AI candidate ranking system for it." },
-    { year: "2026", title: "Global AI Hackathon", org: "Bifrost × Tavily", text: "Built TokenShield, a trust boundary for LLM agents, using Bifrost and Tavily." },
+    { year: "2026", title: "Global AI Hackathon", org: "Bifrost × Tavily", text: "Ranked 28th in the world in the Bifrost track. Built TokenShield, a trust boundary for LLM agents, using Bifrost and Tavily." },
     { year: "NPTEL", title: "Certifications", org: "NPTEL", text: "Deep Learning; Programming in Java." },
     { year: "Open source", title: "Contributor", org: "GitHub", text: "Contributed Python code to open-source repositories through issues and pull requests." },
     { year: "2023", title: "Higher Secondary Certificate", org: "Kerala Public School, Jamshedpur", text: "Class XII, graduated 2023. Took part in inter-school public speaking competitions." }
@@ -64,7 +64,8 @@ const SITE = {
       { title: "First place, impromptu competition", text: "Won first place in an impromptu competition held by the Peer Counselling Club at GH Raisoni during mental health week." },
       { title: "Drone workshop: 2nd place", text: "Took part in a hands-on drone workshop at my college and was awarded 2nd place for the project we built at the end." },
       { title: "Colossus 3.0 finalist", text: "Team CODEPINK, Open Innovation. Finalist: 70 of 800+ teams. 13 to 14 Nov 2026, Dr. Ambedkar Institute of Technology, Bengaluru." },
-      { title: "Copyright registered", text: "HerBalance: AI Powered Android Application for PMOS/PCOD Management. Registered with the Copyright Office, Government of India, with me as co-author and co-owner (date of ROC 11/11/2026)." }
+      { title: "Copyright registered", text: "HerBalance: AI Powered Android Application for PMOS/PCOD Management. Registered with the Copyright Office, Government of India, with me as co-author and co-owner (date of ROC 11/11/2026)." },
+      { title: "Global AI Hackathon: 28th in the world", text: "Ranked 28th in the world in the Bifrost track of the Global AI Hackathon, with TokenShield, built using Bifrost and Tavily." }
     ]
   },
   gallery: [
@@ -75,7 +76,7 @@ const SITE = {
     { src: "assets/g5.jpg", caption: "Drone workshop at GH Raisoni" },
     { src: "assets/g6.jpg", caption: "Copyright registration, HerBalance" }
   ],
-  socialPhotos: ["assets/g2.jpg", "assets/h2.jpg", "assets/g1.jpg", "assets/h1.jpg", "assets/g3.jpg"],
+  socialPhotos: ["assets/s1.jpg","assets/s2.jpg","assets/s3.jpg","assets/s4.jpg","assets/s5.jpg","assets/s6.jpg","assets/s7.jpg","assets/s8.jpg","assets/s9.jpg","assets/s10.jpg"],
 
   interests: ["Applied AI & LLM systems", "Machine learning", "Safe, reliable AI", "Backend & data", "Reading & writing", "Public speaking"],
   languages: [
