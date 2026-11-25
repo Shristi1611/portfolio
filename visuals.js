@@ -219,7 +219,7 @@
     }
     function frame(now) {
       if (!run) return;
-      var t = (now - t0) % total, si = Math.floor(t / STEP), f = Math.min(1, (t - si * STEP) / (STEP * 0.78));
+      var t = Math.max(0, now - t0) % total, si = Math.floor(t / STEP), f = Math.min(1, (t - si * STEP) / (STEP * 0.78));
       if (si >= steps.length) { pk.setAttribute('opacity', 0); requestAnimationFrame(frame); return; }
       if (si < last) { reset(); last = -1; }
       // light everything for steps before si; lit first source
@@ -408,7 +408,7 @@
     function cv() { return root.querySelector('.n8n-cv[data-w="' + cur + '"]'); }
     function frame(now) {
       if (!run) return;
-      var W = N8N[cur], c = cv(), seq = W.seq, total = seq.length * STEP + HOLD, t = (now - t0) % total;
+      var W = N8N[cur], c = cv(), seq = W.seq, total = seq.length * STEP + HOLD, t = Math.max(0, now - t0) % total;
       var st = {}; seq.forEach(function (ids, i) { var d = t - i * STEP; ids.forEach(function (id) { st[id] = d < 0 ? '' : (d < 520 ? 'run' : 'done'); }); });
       c.querySelectorAll('.nd').forEach(function (g) { var v = st[g.dataset.n] || ''; g.setAttribute('class', 'nd' + (v ? ' ' + v : '')); });
       c.querySelectorAll('.ln').forEach(function (p) { var b = p.dataset.e.split('>')[1], a = p.dataset.e.split('>')[0]; p.setAttribute('class', 'ln' + (p.classList.contains('sub') ? ' sub' : '') + (st[b] && st[a] === 'done' || st[b] === 'done' ? ' on' : '')); });
@@ -419,6 +419,203 @@
     return { start: function () { if (run) return; run = true; t0 = performance.now(); requestAnimationFrame(frame); }, stop: function () { run = false; }, restart: function () { t0 = performance.now(); } };
   }
 
+  /* ============ Story animations (canvas): Redrob ranking, FCCL compression, ML Unwrapped from scratch ============
+     Everything shown comes from each project's README; profiles/points are illustrations, not real data. */
+  var K = { ink: '#1a1517', acc: '#bd4a74', pink: '#f4b6c9', tint: '#f7e2e8', mute: '#55484d', dim: '#7b6d72', line: '#e4d4d9', red: '#d33f49', ok: '#2f8f5b', teal: '#2f9aa8', amber: '#e0912f', vio: '#6d5bd0', blue: '#4a7fd1' };
+  var cl = function (x, a, b) { return Math.min(b, Math.max(a, x)); };
+  var seg = function (t, a, b) { return cl((t - a) / (b - a), 0, 1); };
+  var ez = function (x) { return x < .5 ? 2 * x * x : 1 - Math.pow(-2 * x + 2, 2) / 2; };
+  var lp = function (a, b, x) { return a + (b - a) * x; };
+  var FB = '"Inter","Helvetica Neue",Arial,sans-serif';
+  function txt(c, s, x, y, size, col, al, w) { c.font = (w || 400) + ' ' + size + 'px ' + FB; c.fillStyle = col; c.textAlign = al || 'left'; c.textBaseline = 'middle'; c.fillText(s, x, y); }
+  function rr(c, x, y, w, h, r, fill, stroke, lw) { c.beginPath(); c.roundRect(x, y, w, h, r); if (fill) { c.fillStyle = fill; c.fill(); } if (stroke) { c.lineWidth = lw || 1.5; c.strokeStyle = stroke; c.stroke(); } }
+  function cap(c, t, list) { var s = list[0][1]; list.forEach(function (x) { if (t >= x[0]) s = x[1]; }); txt(c, s, 400, 28, 16, K.ink, 'center', 600); }
+
+  /* --- Redrob: scoring and ranking --- */
+  var RW = [40, 25, 20, 10, 5], RN = ['Career history', 'Skills', 'Behaviour', 'Experience', 'Profile'], RC = ['#bd4a74', '#e0912f', '#2f9aa8', '#6d5bd0', '#4c9a5b'];
+  var RD = [[.92, .8, .7, .9, .8], [.55, .9, .85, .7, .9], [.8, .6, .5, .8, .7], [.3, .95, .9, .6, .9], [.7, .75, .8, .6, .5], [.95, .2, .3, .9, .4], [.45, .5, .4, .5, .6], [.9, 1, .9, .8, .9]];
+  var RL = ['Profile A', 'Profile B', 'Profile C', 'Profile D', 'Profile E', 'Profile F', 'Profile G', 'Profile H'];
+  var RT = RD.map(function (d) { return d.reduce(function (s, f, i) { return s + f * RW[i]; }, 0); });
+  var RINIT = [3, 6, 1, 7, 5, 0, 4, 2], RS0 = [], RS1 = [], RS2 = [];
+  (function () {
+    RINIT.forEach(function (idx, slot) { RS0[idx] = slot; });
+    var ord = RD.map(function (_, i) { return i; }).sort(function (a, b) { return RT[b] - RT[a]; });
+    ord.forEach(function (idx, slot) { RS1[idx] = slot; });
+    RD.forEach(function (_, i) { RS2[i] = RS1[i] - (RS1[i] > RS1[7] ? 1 : 0); });
+  })();
+  function drawRanking(c, t) {
+    cap(c, t, [[0, '100,000 candidate profiles, CPU only'], [1.5, 'Five weighted dimensions'], [6.6, 'Career-fit gate on the final score'], [7.8, 'Sorted by score'], [9.2, 'Honeypot detection flags an impossible profile'], [11.6, 'Top 100 go to submission.csv']]);
+    var lw = -110;
+    RN.forEach(function (n, i) {
+      var on = t > 1.5 && t < 6.6 && Math.floor(t - 1.5) === i; c.font = '500 11px ' + FB; var w = c.measureText(n + ' ' + RW[i] + '%').width + 32;
+      rr(c, 150 + lw, 46, w, 22, 11, on ? RC[i] : '#fff', on ? RC[i] : K.line, 1.2);
+      c.fillStyle = on ? '#fff' : RC[i]; c.beginPath(); c.arc(150 + lw + 11, 57, 3.5, 0, 6.3); if (!on) c.fill();
+      txt(c, n + ' ' + RW[i] + '%', 150 + lw + 20, 57.5, 11, on ? '#fff' : K.mute, 'left', 500); lw += w + 8;
+    });
+    var rh = 44, y0 = 96, bw = 4.1;
+    for (var i = 0; i < 8; i++) {
+      var slot = lp(lp(RS0[i], RS1[i], ez(seg(t, 7.8, 9.2))), RS2[i], ez(seg(t, 10.5, 11.4)));
+      var a = seg(t, .1 + i * .12, .6 + i * .12) * (i === 7 ? 1 - seg(t, 10.3, 10.9) : 1);
+      if (a <= 0) continue;
+      var y = y0 + slot * rh, hp = i === 7 && t > 9.2 && t < 10.9;
+      c.globalAlpha = a;
+      rr(c, 30, y, 740, rh - 6, 10, '#fff', hp ? K.red : K.line, hp ? 2 : 1);
+      txt(c, RL[i], 46, y + (rh - 6) / 2, 13, K.ink, 'left', 600);
+      var x = 150;
+      for (var d = 0; d < 5; d++) {
+        var f = ez(seg(t, 1.5 + d, 2.5 + d)), w = RD[i][d] * RW[d] * bw * f;
+        if (w > 0) { rr(c, x, y + 10, w, rh - 26, 3, RC[d]); x += w; }
+      }
+      if (t > 6.6) { var sc = RT[i] * ez(seg(t, 6.6, 7.8)); txt(c, sc.toFixed(1), 600, y + (rh - 6) / 2, 14, K.ink, 'right', 700); }
+      if (hp) { rr(c, 616, y + 6, 146, 26, 13, K.red); txt(c, 'Honeypot', 689, y + 19.5, 12, '#fff', 'center', 700); }
+      else if (t > 11.6) { var rk = RS2[i] + 1; rr(c, 700, y + 6, 62, 26, 13, rk <= 3 ? [K.amber, K.teal, K.vio][rk - 1] : K.tint); txt(c, '#' + rk, 731, y + 19.5, 12, rk <= 3 ? '#fff' : K.acc, 'center', 700); }
+      c.globalAlpha = 1;
+    }
+    if (t > 6.6 && t < 7.9) { var g = Math.sin(seg(t, 6.6, 7.9) * Math.PI); c.setLineDash([5, 5]); c.strokeStyle = K.amber; c.globalAlpha = g; c.lineWidth = 2; c.beginPath(); c.moveTo(620, 90); c.lineTo(620, 452); c.stroke(); c.setLineDash([]); c.globalAlpha = 1; txt(c, 'Career-fit gate', 620, 462, 12, K.amber, 'center', 700); }
+    var b = seg(t, 12, 12.6); if (b > 0) { c.globalAlpha = b; txt(c, '100,000 candidates ranked in under 40 seconds, CPU only', 400, 478, 15, K.teal, 'center', 700); c.globalAlpha = 1; }
+  }
+
+  /* --- FCCL: compress, guard, retry --- */
+  var FW = [200, 215, 180, 210, 150, 205, 190, 170, 212, 140, 200, 120], FDROP = [1, 4, 7, 10];
+  function docLines(c, x, y, a, tt, mode) {
+    for (var i = 0; i < 12; i++) {
+      var dr = FDROP.indexOf(i) >= 0, f = mode === 'drop' && dr ? tt : 0;
+      c.globalAlpha = a * (1 - f * .75);
+      rr(c, x, y + i * 19, FW[i] * (1 - f * .35), 8, 4, f > 0 ? '#f2c47f' : '#b9c8e6');
+    }
+    c.globalAlpha = 1;
+  }
+  function drawFccl(c, t) {
+    cap(c, t, [[0, 'Context + question'], [1.3, 'The layer decides when and how hard to compress'], [2.8, 'Compression model: LLMLingua-2'], [4.4, 'Guard: falls back to the original text if needed'], [5.8, 'The model says "unknown"'], [6.2, 'Retry net: re-ask with the original'], [8, 'Answered'], [8.9, 'What real data showed (SQuAD, DREAM, MultiWOZ)']]);
+    var a0 = seg(t, 0, 1);
+    c.globalAlpha = a0; rr(c, 30, 70, 240, 270, 14, '#fff', K.line); txt(c, 'Context', 46, 90, 13, K.dim, 'left', 600); c.globalAlpha = 1;
+    var tt = ez(seg(t, 2.8, 3.8)), show = t < 3.9 ? 1 : (t > 6.2 && t < 7.2 ? 1 : 0.35);
+    docLines(c, 46, 104, a0 * (t < 3.9 || t > 6.2 ? 1 : .35), t < 6.2 ? tt : 0, t < 6.2 ? 'drop' : '');
+    rr(c, 30, 355, 240, 44, 12, '#fff', K.line); txt(c, 'Question', 46, 369, 12, K.dim, 'left', 600); rr(c, 46, 380, 150, 8, 4, K.blue);
+    function packet(x, y, n, col, al) { c.globalAlpha = al; for (var i = 0; i < n; i++) rr(c, x - 22, y - n * 4.5 + i * 9, 44, 6, 3, col); c.globalAlpha = 1; }
+    if (t > 3.6 && t < 4.4) { packet(lp(270, 405, ez(seg(t, 3.6, 4.4))), 225, 8, K.teal, 1); }
+    if (t >= 4.4 && t < 5.8) { packet(lp(405, 675, ez(seg(t, 4.6, 5.8))), 225, 8, K.teal, 1 - seg(t, 5.6, 5.8)); }
+    var hl = t > 1.3 && t < 5.4;
+    rr(c, 330, 150, 150, 150, 16, hl ? '#dff1f3' : '#fff', hl ? K.teal : K.line, hl ? 2.5 : 1.5);
+    txt(c, 'Compression', 405, 188, 15, K.ink, 'center', 700); txt(c, 'layer', 405, 208, 15, K.ink, 'center', 700);
+    txt(c, 'LLMLingua-2', 405, 236, 12, K.mute, 'center');
+    var gd = t > 4.4 && t < 5.8; rr(c, 360, 262, 90, 24, 12, gd ? K.ok : '#fff', gd ? K.ok : K.line); txt(c, gd ? 'Guard ✓' : 'Guard', 405, 274.5, 12, gd ? '#fff' : K.dim, 'center', 700);
+    var ans = t > 5.6;
+    rr(c, 580, 150, 190, 150, 16, ans ? '#ece9fb' : '#fff', ans ? K.vio : K.line, ans ? 2.5 : 1.5); txt(c, 'Answerer LLM', 675, 188, 15, K.ink, 'center', 700);
+    if (ans && t < 8) { rr(c, 615, 225, 120, 36, 18, t > 5.8 ? K.red : '#fff'); txt(c, 'unknown', 675, 243.5, 15, '#fff', 'center', 700); }
+    if (t >= 8) { rr(c, 615, 225, 120, 36, 18, K.ok); txt(c, 'answer ✓', 675, 243.5, 15, '#fff', 'center', 700); }
+    c.strokeStyle = K.line; c.lineWidth = 2; c.beginPath(); c.moveTo(270, 225); c.lineTo(330, 225); c.moveTo(480, 225); c.lineTo(580, 225); c.stroke();
+    if (t > 6.2 && t < 8) {
+      var u = ez(seg(t, 6.4, 7.8)), px = u < .8 ? lp(150, 675, u / .8) : 675, py = u < .8 ? 440 : lp(440, 275, (u - .8) / .2);
+      c.strokeStyle = K.red; c.setLineDash([6, 6]); c.lineWidth = 2; c.beginPath(); c.moveTo(150, 440); c.lineTo(675, 440); c.lineTo(675, 300); c.stroke(); c.setLineDash([]);
+      packet(px, py, 12, K.red, seg(t, 6.2, 6.6)); txt(c, 'original text', 412, 458, 12, K.red, 'center', 600);
+    }
+    var g = [[0.8, 'little or no loss', K.ok], [0.6, 'about 8 points', K.amber], [0.45, '18 to 23 points', K.red]];
+    g.forEach(function (r, i) { var a = seg(t, 9 + i * .7, 9.6 + i * .7); if (a <= 0) return; c.globalAlpha = a; rr(c, 30 + i * 250, 420, 240, 46, 12, '#fff', K.line); rr(c, 30 + i * 250, 424, 5, 38, 2.5, r[2]); txt(c, 'Keep ' + r[0], 46 + i * 250, 436, 13, r[2], 'left', 700); txt(c, r[1], 46 + i * 250, 454, 13, K.mute, 'left'); c.globalAlpha = 1; });
+    var f = seg(t, 11.3, 12); if (f > 0) { c.globalAlpha = f; rr(c, 300, 322, 470, 38, 19, K.vio); txt(c, '200 fresh questions: retry net lost about 1 point at 67% of tokens', 535, 341.5, 14, '#fff', 'center', 700); c.globalAlpha = 1; }
+  }
+
+  /* --- ML Unwrapped: algorithms built from scratch (tiny real implementations run live) --- */
+  var MLS = (function () {
+    var s = 7, r = function () { s = (s * 16807) % 2147483647; return s / 2147483647; }, g = function () { return (r() + r() + r() - 1.5) * 1.15; };
+    var cluster = function (cx, cy, sd, n, k) { var o = []; for (var i = 0; i < n; i++) o.push({ x: cl(cx + g() * sd, .03, .97), y: cl(cy + g() * sd, .03, .97), k: k }); return o; };
+    var lin = []; for (var i = 0; i < 28; i++) { var x = .05 + .9 * r(); lin.push({ x: x, y: cl(.15 + .65 * x + g() * .1, .02, .98) }); }
+    var C2 = cluster(.3, .35, .16, 24, 0).concat(cluster(.7, .65, .16, 24, 1));
+    var C3 = cluster(.22, .72, .14, 18, 0).concat(cluster(.5, .25, .14, 18, 1), cluster(.78, .7, .14, 18, 2));
+    var NB = cluster(.3, .62, .2, 26, 0).concat(cluster(.68, .4, .2, 26, 1));
+    // linear regression by gradient descent: path of (w,b)
+    var lpth = [], w = 0, b = 0; for (i = 0; i < 60; i++) { var gw = 0, gb = 0; lin.forEach(function (p) { var e = w * p.x + b - p.y; gw += e * p.x; gb += e; }); w -= 1.2 * gw / lin.length; b -= 1.2 * gb / lin.length; lpth.push([w, b]); }
+    // softmax regression path: weights K x 3
+    function soft(D, Kc, steps, lr) {
+      var W = []; for (var k = 0; k < Kc; k++) W.push([0, 0, 0]); var path = [];
+      for (var st = 0; st < steps; st++) {
+        var G = []; for (k = 0; k < Kc; k++) G.push([0, 0, 0]);
+        D.forEach(function (p) { var z = W.map(function (v) { return Math.exp(v[0] * p.x + v[1] * p.y + v[2]); }), sm = z.reduce(function (a, q) { return a + q; }, 0); for (var k = 0; k < Kc; k++) { var e = z[k] / sm - (p.k === k ? 1 : 0); G[k][0] += e * p.x; G[k][1] += e * p.y; G[k][2] += e; } });
+        for (k = 0; k < Kc; k++) for (var j = 0; j < 3; j++) W[k][j] -= lr * G[k][j] / D.length;
+        path.push(W.map(function (v) { return v.slice(); }));
+      } return path;
+    }
+    // decision tree (gini), breadth-first splits to depth 3
+    function tree(D) {
+      var out = [], q = [{ d: D, r: [0, 0, 1, 1], dep: 0 }], gini = function (d) { var c = {}; d.forEach(function (p) { c[p.k] = (c[p.k] || 0) + 1; }); var s = 1; for (var k in c) s -= Math.pow(c[k] / d.length, 2); return s; };
+      while (q.length) {
+        var n = q.shift(); if (n.dep >= 3 || n.d.length < 4 || gini(n.d) < .05) { n.leaf = true; out.push({ leaf: true, r: n.r, d: n.d }); continue; }
+        var best = null; ['x', 'y'].forEach(function (ax) { n.d.forEach(function (p) { var L = n.d.filter(function (z) { return z[ax] <= p[ax]; }), R = n.d.filter(function (z) { return z[ax] > p[ax]; }); if (L.length < 2 || R.length < 2) return; var sc = (L.length * gini(L) + R.length * gini(R)) / n.d.length; if (!best || sc < best.sc) best = { sc: sc, ax: ax, th: p[ax], L: L, R: R }; }); });
+        if (!best) { out.push({ leaf: true, r: n.r, d: n.d }); continue; }
+        out.push({ ax: best.ax, th: best.th, r: n.r });
+        var r0 = n.r, lr_ = best.ax === 'x' ? [r0[0], r0[1], best.th, r0[3]] : [r0[0], r0[1], r0[2], best.th], rr_ = best.ax === 'x' ? [best.th, r0[1], r0[2], r0[3]] : [r0[0], best.th, r0[2], r0[3]];
+        q.push({ d: best.L, r: lr_, dep: n.dep + 1 }, { d: best.R, r: rr_, dep: n.dep + 1 });
+      } return out;
+    }
+    return { lin: lin, C2: C2, C3: C3, NB: NB, lpth: lpth, s2: soft(C2, 2, 60, 6), s3: soft(C3, 3, 60, 6), tr: tree(C3) };
+  })();
+  var MLN = ['Linear regression', 'Logistic regression', 'Softmax regression', 'Naive Bayes', 'KNN', 'Decision trees'], MCOL = [K.acc, K.teal, K.amber], ACOL = [K.acc, K.teal, K.vio, K.amber, K.blue, K.ok];
+  var MREG = ['#f4d6e0', '#d3ecef', '#fbe8c9'];
+  var PX = 290, PY = 70, PW = 480, PH = 360;
+  function mx(x) { return PX + x * PW; } function my(y) { return PY + (1 - y) * PH; }
+  function dots(c, D, col3, al) { D.forEach(function (p) { c.globalAlpha = al; c.beginPath(); c.arc(mx(p.x), my(p.y), 5, 0, 6.3); c.fillStyle = col3 ? MCOL[p.k] : K.acc; c.fill(); c.lineWidth = 1.5; c.strokeStyle = '#fff'; c.stroke(); }); c.globalAlpha = 1; }
+  function regions(c, W, Kc) {
+    var nx = 32, ny = 24; for (var i = 0; i < nx; i++) for (var j = 0; j < ny; j++) {
+      var x = (i + .5) / nx, y = (j + .5) / ny, bk = 0, bv = -1e9; W.forEach(function (v, k) { var z = v[0] * x + v[1] * y + v[2]; if (z > bv) { bv = z; bk = k; } });
+      c.fillStyle = MREG[bk]; c.fillRect(Math.floor(mx(i / nx)), Math.floor(my((j + 1) / ny)), Math.ceil(PW / nx) + 1, Math.ceil(PH / ny) + 1);
+    } c.globalAlpha = 1;
+  }
+  function drawMl(c, t) {
+    var cod = 'import numpy as np   # NumPy only', n = Math.floor(cod.length * ez(seg(t, .2, 1.8)));
+    c.font = '500 15px "SFMono-Regular",Consolas,monospace'; c.fillStyle = K.ink; c.textAlign = 'left'; c.textBaseline = 'middle'; c.fillText(cod.slice(0, n) + (t < 2.2 && Math.floor(t * 3) % 2 ? '▍' : ''), 30, 30);
+    var cur = t < 2 ? -1 : Math.min(5, Math.floor((t - 2) / 4)), out = t > 26;
+    MLN.forEach(function (nm, i) {
+      var y = 84 + i * 44, vis = t > 1.8 + i * .2, done = out || i < cur, on = i === cur && !out;
+      if (!vis) return;
+      rr(c, 30, y, 230, 36, 10, '#fff', on ? ACOL[i] : K.line, on ? 2.5 : 1); if (on) rr(c, 30, y + 6, 5, 24, 2.5, ACOL[i]);
+      txt(c, nm, 46, y + 18.5, 13.5, on ? ACOL[i] : (done ? K.ink : K.dim), 'left', on ? 700 : 500);
+      if (done) txt(c, '✓', 244, y + 18.5, 14, K.ok, 'right', 700);
+    });
+    rr(c, PX, PY, PW, PH, 14, '#fff', K.line, 1.5);
+    if (t >= 2 && !out) {
+      var k = (t - 2) / 4 - cur, u = seg(k, .12, .82), i = cur;
+      c.save(); c.beginPath(); c.roundRect(PX, PY, PW, PH, 14); c.clip();
+      if (i === 0) {
+        var s = Math.floor(ez(u) * 59), p = MLS.lpth[s]; dots(c, MLS.lin, false, 1);
+        c.strokeStyle = K.vio; c.lineWidth = 3.5; c.beginPath(); c.moveTo(mx(0), my(p[1])); c.lineTo(mx(1), my(p[0] + p[1])); c.stroke();
+      } else if (i === 1 || i === 2) {
+        var P = i === 1 ? MLS.s2 : MLS.s3, W = P[Math.floor(ez(u) * 59)]; regions(c, W, W.length); dots(c, i === 1 ? MLS.C2 : MLS.C3, true, 1);
+      } else if (i === 3) {
+        dots(c, MLS.NB, true, 1); var sc = ez(seg(k, .1, .5));
+        [0, 1].forEach(function (cls) {
+          var D = MLS.NB.filter(function (p) { return p.k === cls; }), m = [0, 0], v = [0, 0]; D.forEach(function (p) { m[0] += p.x / D.length; m[1] += p.y / D.length; }); D.forEach(function (p) { v[0] += Math.pow(p.x - m[0], 2) / D.length; v[1] += Math.pow(p.y - m[1], 2) / D.length; });
+          c.beginPath(); c.ellipse(mx(m[0]), my(m[1]), Math.sqrt(v[0]) * 2 * PW * sc, Math.sqrt(v[1]) * 2 * PH * sc, 0, 0, 6.3); c.strokeStyle = MCOL[cls]; c.lineWidth = 2.5; c.stroke(); c.globalAlpha = .1; c.fillStyle = MCOL[cls]; c.fill(); c.globalAlpha = 1;
+        });
+        if (k > .55) { var qx = .5, qy = .5, ll = [0, 1].map(function (cls) { var D = MLS.NB.filter(function (p) { return p.k === cls; }), m = [0, 0], v = [0, 0], s = 0; D.forEach(function (p) { m[0] += p.x / D.length; m[1] += p.y / D.length; }); D.forEach(function (p) { v[0] += Math.pow(p.x - m[0], 2) / D.length; v[1] += Math.pow(p.y - m[1], 2) / D.length; }); return -Math.pow(qx - m[0], 2) / (2 * v[0]) - Math.pow(qy - m[1], 2) / (2 * v[1]) - .5 * Math.log(v[0] * v[1]); }); var w2 = ll[1] > ll[0] ? 1 : 0, pu = 1 + .25 * Math.sin(t * 6); c.beginPath(); c.arc(mx(qx), my(qy), 9 * pu, 0, 6.3); c.fillStyle = MCOL[w2]; c.fill(); c.lineWidth = 3; c.strokeStyle = '#fff'; c.stroke(); }
+      } else if (i === 4) {
+        var ang = ez(u) * 6.3, qx2 = .5 + .3 * Math.cos(ang), qy2 = .5 + .22 * Math.sin(ang), D = MLS.NB.slice().sort(function (a, b) { return Math.hypot(a.x - qx2, a.y - qy2) - Math.hypot(b.x - qx2, b.y - qy2); }).slice(0, 5), vote = D.reduce(function (s, p) { return s + p.k; }, 0) > 2 ? 1 : 0;
+        dots(c, MLS.NB, true, .55); D.forEach(function (p) { c.beginPath(); c.moveTo(mx(qx2), my(qy2)); c.lineTo(mx(p.x), my(p.y)); c.strokeStyle = K.vio; c.lineWidth = 1.5; c.stroke(); }); dots(c, D, true, 1);
+        c.beginPath(); c.arc(mx(qx2), my(qy2), 9, 0, 6.3); c.fillStyle = MCOL[vote]; c.fill(); c.lineWidth = 3; c.strokeStyle = '#fff'; c.stroke();
+      } else {
+        var T = MLS.tr, nsp = T.filter(function (z) { return !z.leaf; }), shown = Math.ceil(ez(u) * nsp.length);
+        if (u > .85) T.forEach(function (z) { if (!z.leaf) return; var cnt = {}, bk = 0, bc = -1; z.d.forEach(function (p) { cnt[p.k] = (cnt[p.k] || 0) + 1; if (cnt[p.k] > bc) { bc = cnt[p.k]; bk = p.k; } }); c.globalAlpha = seg(u, .85, 1); c.fillStyle = MREG[bk]; c.fillRect(mx(z.r[0]), my(z.r[3]), (z.r[2] - z.r[0]) * PW, (z.r[3] - z.r[1]) * PH); c.globalAlpha = 1; });
+        dots(c, MLS.C3, true, 1); c.strokeStyle = K.vio; c.lineWidth = 3;
+        nsp.slice(0, shown).forEach(function (z) { c.beginPath(); if (z.ax === 'x') { c.moveTo(mx(z.th), my(z.r[1])); c.lineTo(mx(z.th), my(z.r[3])); } else { c.moveTo(mx(z.r[0]), my(z.th)); c.lineTo(mx(z.r[2]), my(z.th)); } c.stroke(); });
+      }
+      c.restore();
+    }
+    if (out) {
+      var a = seg(t, 26, 27); c.globalAlpha = a;
+      [['97.4%', 'Breast Cancer Wisconsin'], ['96.7%', 'Iris']].forEach(function (r, j) { var y = 120 + j * 110; txt(c, r[0], PX + PW / 2, y, 52, [K.acc, K.teal][j], 'center', 700); txt(c, r[1], PX + PW / 2, y + 40, 16, K.mute, 'center', 500); });
+      rr(c, PX + 60, 350, PW - 120, 40, 20, '#ece9fb'); txt(c, 'Public 30-day series · 36 commits so far', PX + PW / 2, 370.5, 14, K.vio, 'center', 700); c.globalAlpha = 1;
+    }
+    if (!out && t >= 2) { var nm = MLN[cur]; txt(c, nm + ', from scratch with NumPy', PX + PW / 2, 452, 15, K.ink, 'center', 600); }
+  }
+
+  var SCN = { ranking: [drawRanking, 15], fccl: [drawFccl, 13.5], mlscratch: [drawMl, 29] };
+  function sceneHTML(key, hint) { return '<canvas class="scn" data-k="' + key + '" width="1600" height="1000" aria-label="Animation"></canvas><p class="pcap hint">' + hint + '</p>'; }
+  function Scene(cv, key) {
+    var c = cv.getContext('2d'), D = SCN[key], t0 = 0, raf = 0, run = false;
+    function draw(t) { c.setTransform(2, 0, 0, 2, 0, 0); c.clearRect(0, 0, 800, 500); c.fillStyle = '#fff'; c.fillRect(0, 0, 800, 500); try { D[0](c, t); } catch (e) { } }
+    function frame(now) { if (!run) return; var t = Math.max(0, now - t0) / 1000; if (t > D[1]) { t0 = now; t = 0; } draw(t); raf = requestAnimationFrame(frame); }
+    return { start: function () { if (run) return; run = true; t0 = performance.now(); raf = requestAnimationFrame(frame); }, stop: function () { run = false; cancelAnimationFrame(raf); }, restart: function () { t0 = performance.now(); }, draw: draw };
+  }
+
   /* ============ panes ============ */
   var DEMOS = {
     pcod: { label: 'Demo', html: phone },
@@ -427,7 +624,10 @@
     syndicate: { label: 'Demo', html: function () { return video('assets/media/syndicate-ui.mp4', 'Syndicate interface (work in progress): recording'); }, wide: true },
     tokenshield: { label: 'Attack stopped', html: function () { return video('assets/media/tokenshield.mp4', 'Animation of the flow: a planted instruction is stopped before it reaches the main model'); } },
     maithili: { label: 'Paper', html: paper },
-    saralkanoon: { label: 'Demo', html: saral }
+    saralkanoon: { label: 'Demo', html: saral },
+    ranking: { label: 'Ranking', html: function () { return sceneHTML('ranking', 'Animation of the README pipeline with made-up profiles. Click to replay.'); } },
+    fccl: { label: 'Compression', html: function () { return sceneHTML('fccl', 'Animation of the README flow. Click to replay.'); } },
+    mlscratch: { label: 'From scratch', html: function () { return sceneHTML('mlscratch', 'Small live illustration of each algorithm, not the repo code. Click to replay.'); } }
   };
   var WIDE = { fccl: 0, tokenshield: 1 };
 
@@ -448,12 +648,14 @@
   function bind(row, key) {
     var pv = row.querySelector('.pvis'); if (!pv) return;
     var panes = pv.querySelectorAll('.pv-pane'), tabs = pv.querySelectorAll('.pv-tabs button'), anim = null;
+    var scv = pv.querySelector('.scn'), scn = scv ? Scene(scv, scv.dataset.k) : null; if (scv) scv.addEventListener('click', function () { scn.restart(); });
     var fl = pv.querySelector('.flow'), nn = pv.querySelector('.n8n'); if (nn) anim = N8Ctl(nn); else if (fl && getFlow(key)) { anim = Anim(fl, key); fl.addEventListener('click', function () { anim.restart(); }); }
     function activate() {
       var on = pv.querySelector('.pv-pane.on'); if (!on) return;
       var name = on.dataset.p, v = pv.querySelector('video'), th = pv.querySelector('.three');
       if (v) { if (name === 'demo') v.play().catch(function () {}); else v.pause(); }
       if (anim) { if (name === 'flow') anim.start(); else anim.stop(); }
+      if (scn) { if (name === 'demo') scn.start(); else scn.stop(); }
       if (th) { if (name === '3d') requestAnimationFrame(function () { start3D(th, key); }); else if (th._t) th._t.visible = false; }
     }
     function show(name) {
@@ -479,12 +681,12 @@
         es.forEach(function (e) {
           var on = pv.querySelector('.pv-pane.on'); if (!on) return;
           if (e.isIntersecting) activate();
-          else { var v = pv.querySelector('video'); if (v) v.pause(); if (anim) anim.stop(); var th = pv.querySelector('.three'); if (th && th._t) th._t.visible = false; }
+          else { var v = pv.querySelector('video'); if (v) v.pause(); if (anim) anim.stop(); if (scn) scn.stop(); var th = pv.querySelector('.three'); if (th && th._t) th._t.visible = false; }
         });
       }, { threshold: 0.25 }).observe(pv);
     }
   }
 
-  window.Visuals = { html: html, bind: bind, setArch: function (a) { ARCH = a || {}; FLOWS = {}; } };
+  window.Visuals = { html: html, bind: bind, drawAt: function (cv, key, tm) { Scene(cv, key).draw(tm); }, setArch: function (a) { ARCH = a || {}; FLOWS = {}; } };
   window.addEventListener('resize', function () { document.querySelectorAll('.three').forEach(function (el) { if (el._t) size3(el._t); }); });
 })();
