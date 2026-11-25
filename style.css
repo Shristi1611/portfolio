@@ -729,3 +729,36 @@ body.lock { overflow: hidden; }
 .mind li::before { font-size: clamp(1.2rem, 1.3vw, 1.7rem); }
 
 .mot-lead { color: var(--acc); }
+
+/* v9 */
+.sec-title { color: var(--acc); }
+.hl-photos img { aspect-ratio: 16 / 6; }
+.hl-cards { grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); }
+#projects .sec-title { margin-bottom: clamp(.4rem, 1.5vh, 1rem); }
+#projects .prow:first-child { padding-top: clamp(1rem, 3vh, 2rem); }
+#contact { text-align: center; display: flex; flex-direction: column; align-items: center; }
+#contact .avatar { margin: 0 auto 1.2rem; }
+#contact .contact-row { justify-content: center; }
+#contact .contact-big { text-align: center; }
+footer { text-align: center; }
+@media (min-width: 1500px) { .hl-cards { grid-template-columns: repeat(5, 1fr); } }
+
+/* v12: no progress bar, no heading underlines, rotating photo stack */
+#scroll-progress { display: none !important; }
+.sec-title { border-bottom: 0 !important; padding-bottom: 0; }
+#motivation .sec-title, #mindset .sec-title, #highlights .sec-title { color: var(--ink); }
+#projects .sec-title { font-size: clamp(2.8rem, 4.4vw, 6rem); margin-bottom: 0; }
+#projects .prow:first-child { padding-top: .4rem; }
+.fan { position: relative; display: block; height: clamp(320px, 36vw, 700px); overflow: hidden; margin-top: 1rem; }
+.fan .photo { position: absolute; left: 50%; bottom: -4%; width: clamp(150px, 20vw, 400px); margin: 0; border: 6px solid #fff; border-bottom: 0; transform-origin: bottom center; transition: transform 1s cubic-bezier(.5, .05, .2, 1), opacity .4s; cursor: pointer; will-change: transform; }
+.fan .photo.main { border-bottom: 0; margin: 0; }
+.fan .photo:hover { translate: none; }
+
+/* v14: story canvases, highlights pyramid, no script signature */
+.scn { display: block; width: 100%; max-width: 640px; margin: 0 auto; aspect-ratio: 8 / 5; border-radius: 18px; background: #fff; box-shadow: 0 18px 44px rgba(26,21,23,.12); cursor: pointer; }
+#signature { display: none !important; }
+#hl-cards { display: block !important; }
+.hl-row { display: flex; justify-content: center; gap: clamp(.8rem, 1.2vw, 1.6rem); margin-bottom: clamp(.8rem, 1.2vw, 1.6rem); }
+.hl-row .hl-card { flex: 0 0 calc((100% - 2 * clamp(.8rem, 1.2vw, 1.6rem)) / 3); max-width: calc((100% - 2 * clamp(.8rem, 1.2vw, 1.6rem)) / 3); }
+@media (max-width: 860px) { .hl-row { flex-direction: column; } .hl-row .hl-card { flex: 1 1 auto; max-width: none; } }
+footer { padding-top: clamp(150px, 11vw, 230px) !important; }
