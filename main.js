@@ -23,6 +23,7 @@
   function show(id, on) { var el = $(id); if (el) el.hidden = !on; }
 
   /* ---------- static content ---------- */
+  var fanTimer = null;
   function renderStatic() {
     document.title = S.name + ' · Portfolio';
     $('logo').textContent = S.initials;
@@ -56,7 +57,9 @@
     if (has(S.highlights)) {
       show('highlights', true);
       $('hl-photos').innerHTML = (S.highlights.photos || []).map(function (p) { return '<img src="' + esc(p) + '" alt="" loading="lazy">'; }).join('');
-      $('hl-cards').innerHTML = (S.highlights.cards || []).map(function (c) { return '<div class="hl-card reveal"><h3>' + esc(c.title) + '</h3><p>' + esc(c.text) + '</p></div>'; }).join('');
+      var hc = (S.highlights.cards || []).map(function (c) { return '<div class="hl-card reveal"><h3>' + esc(c.title) + '</h3><p>' + esc(c.text) + '</p></div>'; });
+      var PYR = { 1: [1], 2: [2], 3: [1, 2], 4: [1, 3], 5: [2, 3], 6: [1, 2, 3], 7: [1, 3, 3], 8: [2, 3, 3] }, sizes = PYR[hc.length] || [hc.length], at = 0;
+      $('hl-cards').innerHTML = sizes.map(function (n) { var r = '<div class="hl-row">' + hc.slice(at, at + n).join('') + '</div>'; at += n; return r; }).join('');
     }
     if (has(S.gallery)) show('gallery', true);
 
@@ -68,12 +71,29 @@
     $('lang-grid').innerHTML = S.languages.map(function (l) { return '<div class="lang"><b>' + esc(l.name) + '</b><span>' + esc(l.level) + '</span></div>'; }).join('');
 
     var ph = S.socialPhotos || [];
+    if (fanTimer) { clearInterval(fanTimer); fanTimer = null; }
     if (ph.length >= 3) {
-      var cnt = ph.length, mid = Math.floor((cnt - 1) / 2);
-      $('fan').innerHTML = ph.map(function (p, i) {
-        var d = i - mid;
-        return '<div class="photo' + (d === 0 ? ' main' : '') + '" style="rotate:' + (d * 6) + 'deg;translate:0 ' + (Math.abs(d) * 4) + '%;z-index:' + (9 - Math.abs(d)) + '"><img src="' + esc(p) + '" alt="" loading="lazy"></div>';
-      }).join('');
+      var cnt = ph.length, fan = $('fan'), act = 0, prev = [];
+      fan.innerHTML = ph.map(function (p) { return '<div class="photo"><img src="' + esc(p) + '" alt="" loading="lazy"></div>'; }).join('');
+      var cards = fan.querySelectorAll('.photo');
+      var place = function () {
+        var half = Math.floor(cnt / 2);
+        cards.forEach(function (c, i) {
+          var d = ((i - act + cnt + half) % cnt) - half, ad = Math.abs(d);
+          var wrap = prev[i] !== undefined && Math.abs(d - prev[i]) > 2;
+          if (wrap) { c.style.transition = 'none'; c.style.opacity = 0; }
+          c.style.zIndex = 10 - ad;
+          c.style.transform = 'translateX(calc(-50% + ' + (d * 15.5) + 'vw)) translateY(' + (d === 0 ? 0 : 6 + ad * 5) + '%) rotate(' + (d * 7) + 'deg) scale(' + (d === 0 ? 1 : (ad === 1 ? 0.76 : 0.6)) + ')';
+          c.classList.toggle('main', d === 0);
+          if (wrap) { void c.offsetWidth; c.style.transition = ''; c.style.opacity = 1; }
+          prev[i] = d;
+        });
+      };
+      place();
+      cards.forEach(function (c, i) { c.addEventListener('click', function () { act = i; place(); }); });
+      var hold = false;
+      fan.addEventListener('pointerenter', function () { hold = true; }); fan.addEventListener('pointerleave', function () { hold = false; });
+      fanTimer = setInterval(function () { if (hold || document.hidden || reduce) return; act = (act + 1) % cnt; place(); }, 2800);
     }
     $('social-links').innerHTML = 'Find me on <a href="' + esc(S.github) + '" target="_blank" rel="noopener">GitHub</a> <a href="' + esc(S.linkedin) + '" target="_blank" rel="noopener">LinkedIn</a>' + (S.devto ? ' <a href="' + esc(S.devto) + '" target="_blank" rel="noopener">DEV</a>' : '');
 
@@ -327,13 +347,19 @@
   function moveGlobe() {
     if (!gStart || reduce) { globe.classList.remove('on'); return; }
     var vh = innerHeight, vw = innerWidth, sz = globe.clientWidth;
-    globe.classList.toggle('on', aY - scrollY < vh + sz && scrollY < gEnd - vh * 0.6);
+    globe.classList.toggle('on', aY - scrollY < vh + sz);
     var hold = aY - vh * 0.4, x, y;       // until then it sits beside the text like a picture, scrolling with the page
     if (scrollY <= hold) { x = aX; y = aY - scrollY; }
     else {                                 // then it drops and wanders across the page
       var d = (scrollY - hold) / vh;
       x = lerp(aX, vw * 0.08, tri(d * 0.8));
       y = vh * lerp(0.4, 0.78, tri(d * 1.1));
+    }
+    var ft = $('footer-text'), cr = document.querySelector('.contact-row');
+    if (ft && cr) {                       // at the very end it lands in the middle, just above the copyright line
+      var maxS = document.documentElement.scrollHeight - vh, left = maxS - scrollY, k = 1 - clamp(left / (vh * 0.7), 0, 1), kk = k * k * (3 - 2 * k);
+      var fy = ft.getBoundingClientRect().top - sz * 0.75;
+      x = lerp(x, vw / 2, kk); y = lerp(y, fy, kk);
     }
     globe.style.transform = 'translate(' + (x - sz / 2).toFixed(1) + 'px,' + (y - sz / 2).toFixed(1) + 'px)';
   }
