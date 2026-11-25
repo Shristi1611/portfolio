@@ -16,7 +16,8 @@ const SITE = {
   email: "shristisinha1611@gmail.com",
   linkedin: "https://www.linkedin.com/in/shristi-sinha-4a3a37345",
   github: "https://github.com/Shristi1611",
-  portrait: "assets/portrait.jpg",
+  devto: "https://dev.to/shristi_sinha",
+  portrait: "assets/portrait-cut.png",
 
   /* Floating stickers in the hero. "$pill" and "$tag" are filled from the active view. */
   stickers: [
@@ -27,15 +28,54 @@ const SITE = {
     { style: "glass", text: "EN · हिन्दी" }
   ],
 
-  /* Scrolling cards: education and highlights (same in every view) */
-  highlights: [
-    { year: "2023 →", title: "B.Tech Computer Science", org: "GH Raisoni International Skill Tech University · Nov 2023 – present", text: "CGPA 9.18 / 10." },
+  /* Experience cards (scroll sideways). Facts only, taken from your CVs. */
+  experience: [
+    { year: "Current", title: "B.Tech Computer Science", org: "GH Raisoni International Skill Tech University · Nov 2023 to present", text: "CGPA 9.18 / 10." },
     { year: "2026", title: "India Runs Hackathon", org: "Redrob AI × Hack2Skill", text: "Submitted to Track 1 (Data & AI Challenge) and Track 2 (Ideathon). Built an AI candidate ranking system for it." },
-    { year: "2026", title: "Kaggle: Biohub", org: "Cell Tracking During Development", text: "Applying machine learning to detect and track cells in 3D microscopy data." },
+    { year: "2026", title: "Global AI Hackathon", org: "Bifrost × Tavily", text: "Built TokenShield, a trust boundary for LLM agents, using Bifrost and Tavily." },
     { year: "NPTEL", title: "Certifications", org: "NPTEL", text: "Deep Learning; Programming in Java." },
     { year: "Open source", title: "Contributor", org: "GitHub", text: "Contributed Python code to open-source repositories through issues and pull requests." },
     { year: "2023", title: "Higher Secondary Certificate", org: "Kerala Public School, Jamshedpur", text: "Class XII, graduated 2023. Took part in inter-school public speaking competitions." }
   ],
+
+  /* ---- Sections that appear ONLY when you fill them in (nothing is invented) ----
+     motivation: { lead: "One bold sentence.", paras: ["Paragraph one", "Paragraph two"] }
+     mindset:    ["Line one", "Line two", "Line three"]
+     highlights: { photos: ["assets/h1.jpg", "assets/h2.jpg"], cards: [{ title: "", text: "" }] }
+     gallery:    [{ src: "assets/g1.jpg", caption: "Caption" }]
+     socialPhotos: ["assets/s1.jpg", "assets/s2.jpg", "assets/s3.jpg", "assets/s4.jpg", "assets/s5.jpg"]  */
+  motivation: {
+    lead: "I get to pursue my passion.",
+    paras: [
+      "Ever since I was a child, computer science has been the subject that fascinated me most. Even during difficult times at home, when I could not study much and my other subjects suffered, computer science was the one I still scored best in, because I studied it out of passion rather than obligation.",
+      "It was a hobby long before it was a career: something I explored in my free time. In 11th grade I started learning TinyML, simply because I enjoyed it.",
+      "When it came to choosing a degree, computer science was not my first choice because of the cost, so I chose a research path through the IISERs. But computer science never left my mind. I realised that whatever else I chose to do, it would always come second to CS. So I chose B.Tech Computer Science, and I have never been happier. I study it the way I always have, as if I were doing something fun."
+    ]
+  },
+  mindset: [
+    "I want to build something new, something that makes people say “wow, I’ve never heard of this before.”",
+    "I work on real problems: I find them, then I build for them.",
+    "When something breaks, I keep trying until I find an alternative solution.",
+    "I want to keep learning ML and AI further."
+  ],
+  highlights: {
+    photos: ["assets/h1.jpg", "assets/h2.jpg"],
+    cards: [
+      { title: "First place, impromptu competition", text: "Won first place in an impromptu competition held by the Peer Counselling Club at GH Raisoni during mental health week." },
+      { title: "Drone workshop: 2nd place", text: "Took part in a hands-on drone workshop at my college and was awarded 2nd place for the project we built at the end." },
+      { title: "Colossus 3.0 finalist", text: "Team CODEPINK, Open Innovation. Finalist: 70 of 800+ teams. 13 to 14 Nov 2026, Dr. Ambedkar Institute of Technology, Bengaluru." },
+      { title: "Copyright registered", text: "HerBalance: AI Powered Android Application for PMOS/PCOD Management. Registered with the Copyright Office, Government of India, with me as co-author and co-owner (date of ROC 11/11/2026)." }
+    ]
+  },
+  gallery: [
+    { src: "assets/g1.jpg", caption: "Presenting my project to my professors" },
+    { src: "assets/g2.jpg", caption: "Drone workshop: programming a Pluto drone with blocks" },
+    { src: "assets/g3.jpg", caption: "Drone lab, Krishi Vigyan Kendra Baramati" },
+    { src: "assets/g4.jpg", caption: "Colossus 3.0 finalist" },
+    { src: "assets/g5.jpg", caption: "Drone workshop at GH Raisoni" },
+    { src: "assets/g6.jpg", caption: "Copyright registration, HerBalance" }
+  ],
+  socialPhotos: ["assets/g2.jpg", "assets/h2.jpg", "assets/g1.jpg", "assets/h1.jpg", "assets/g3.jpg"],
 
   interests: ["Applied AI & LLM systems", "Machine learning", "Safe, reliable AI", "Backend & data", "Reading & writing", "Public speaking"],
   languages: [
@@ -314,6 +354,20 @@ const SITE = {
     }
   },
 
+  /* ---------------- Architecture (from each project's README): [step, detail] ---------------- */
+  arch: {
+    pcod: [["Sign in", "Phone, email or Google through Firebase Authentication"], ["Android app", "Java. Cycle day and phase, period log, 8 symptoms, meals"], ["Firebase Realtime Database", "Rules: each user reads and writes only her own data"], ["Her AI (Gemini)", "Reads the last 3 period logs and last 3 meals"], ["Insight cards", "Three cards, chat, meal detection. Never diagnoses"]],
+    saralkanoon: [["6 legal documents", "200+ pages, including the Consumer Protection and RTI Acts"], ["Extract and chunk", "1000-character chunks with 200 overlap"], ["Ollama embeddings", "nomic-embed-text"], ["Qdrant Cloud", "Vector storage"], ["n8n AI agent", "Webhook-based API backend"], ["Groq", "Llama 3.3 70B writes plain-language answers"], ["Chat UI", "HTML, CSS, JavaScript with async Fetch"]],
+    obliviate: [["PhysioNet sepsis data", "ICU records"], ["SISA slices", "TabNet models in PyTorch"], ["Request", "Delete a record, insert a slice or update a label"], ["Roll back affected slices", "No full retraining"], ["Audit log", "Time, affected slices and accuracy for every operation"], ["FastAPI + SQLite", "Web dashboard and benchmark against full retraining"]],
+    systemone: [["Message", ""], ["Rules", ""], ["Classifier", "Embedding classifier, windowed scan past 474 tokens"], ["Four-way score", "Two wordings by two option orders"], ["Conversation rule", ""], ["Reply checks", ""], ["Canaries and fail-closed", "Allow, escalate or block. Any error blocks"], ["Model", ""]],
+    fccl: [["Context + question", ""], ["Compression layer", "Decides when and how hard to compress"], ["Compression model", "LLMLingua-2"], ["Guard", "Falls back to the original text"], ["Answerer LLM", ""], ["Retry net", "If the model says 'unknown', re-ask with the original"]],
+    maithili: [["Maithili sentences", "2,967 from Sentiment140, translated with Google Translate"], ["Few-shot sets", "10 to 100 labelled examples"], ["MuRIL", "No Maithili in pre-training"], ["IndicBERT v2", "Maithili included"], ["Evaluation", "3 seeds per setting, baseline ablation, error analysis"]],
+    mlscratch: [["NumPy only", "Vectorised matrix operations"], ["Regression", "Linear, logistic and softmax"], ["Naive Bayes", ""], ["KNN", ""], ["Decision trees", ""], ["Results", "97.4% Breast Cancer Wisconsin, 96.7% Iris"]],
+    ranking: [["Candidates", "100,000 profiles, CPU only"], ["Five dimensions", "Career 40, skills 25, behaviour 20, experience 10, profile 5"], ["Career-fit gate", "Applied to the final score"], ["Honeypot detection", "Flags impossible profiles"], ["Top 100", "submission.csv and a verification suite"]],
+    tokenshield: [["Agent request", "OpenAI-compatible gateway in front of Bifrost"], ["Untrusted text", "READMEs, logs, web pages"], ["Quarantined model", "Cheap model that returns only typed, bounded fields"], ["Validated facts", "Cross-check and Tavily freshness check"], ["Main model", "Sees validated facts, never raw text"]],
+    syndicate: [["Traveller agent", "Learns budget, dates and dealbreakers through chat"], ["Supplier agents", "Hidden price floors, perks and cancellation rules"], ["Negotiation", "LLMs negotiate"], ["Rules Guard", "Deterministic. Checks every price and term against inventory"], ["Traveller approval", "Nothing changes until approved"], ["Booking", "Prices re-checked, tampered requests rejected"]]
+  },
+
   /* ---------------- "More on GitHub": smaller repos shown as compact cards ----------------
      views: which views show the card (generic, se, ai, ml, ds). */
   more: [],
@@ -352,7 +406,7 @@ const SITE = {
         { group: "Tools & Platforms", items: ["Git", "GitHub", "n8n", "Qdrant", "Ollama", "Groq API", "Gemini API", "pytest"] },
         { group: "Soft skills", items: ["Public Speaking", "Communication", "Problem Solving", "Team Collaboration"] }
       ],
-      projects: ["saralkanoon", "obliviate", "systemone", "tokenshield", "fccl", "pcod", "ranking", "maithili", "mlscratch", "syndicate"],
+      projects: ["systemone", "pcod", "obliviate", "fccl", "tokenshield", "syndicate", "saralkanoon", "ranking", "maithili", "mlscratch"],
       resumeProjects: ["saralkanoon", "obliviate", "systemone", "fccl", "pcod", "ranking"],
       resumeBullets: 2,
       cv: "assets/Shristi_Sinha_Resume_Generic.pdf"
@@ -388,7 +442,7 @@ const SITE = {
         { group: "Tools & Platforms", items: ["MySQL", "SQLite", "Firebase", "Git", "GitHub", "n8n", "Qdrant", "Ollama", "Groq API", "Gemini API"] },
         { group: "Soft skills", items: ["Public Speaking", "Communication", "Problem Solving", "Team Collaboration"] }
       ],
-      projects: ["pcod", "saralkanoon", "obliviate", "systemone", "syndicate"],
+      projects: ["systemone", "pcod", "obliviate", "syndicate", "saralkanoon"],
       resumeProjects: ["pcod", "saralkanoon", "obliviate", "systemone"],
       resumeBullets: 3,
       cv: "assets/Shristi_Sinha_Resume_SoftwareEngineering.pdf"
@@ -424,7 +478,7 @@ const SITE = {
         { group: "AI Safety & Evaluation", items: ["Prompt-Injection Testing", "Adversarial Testing", "Canary Testing", "Model Evaluation", "Error Analysis", "Context Compression", "Token Optimization", "Feedback Control", "Simulation", "Ablation Studies"] },
         { group: "Tools & Platforms", items: ["n8n", "Qdrant", "Ollama (nomic-embed-text)", "Groq API (Llama 3.3 70B)", "Gemini API", "MySQL", "SQLite", "pytest", "Workflow Automation", "Git", "GitHub"] }
       ],
-      projects: ["saralkanoon", "systemone", "tokenshield", "syndicate", "fccl", "maithili"],
+      projects: ["systemone", "fccl", "tokenshield", "syndicate", "saralkanoon", "maithili"],
       resumeProjects: ["saralkanoon", "systemone", "tokenshield", "fccl"],
       resumeBullets: 4,
       cv: "assets/Shristi_Sinha_Resume_AI.pdf"
@@ -460,7 +514,7 @@ const SITE = {
         { group: "Evaluation", items: ["Robustness Testing", "Adversarial Testing", "Benchmarking", "Ablation Studies", "Data Privacy"] },
         { group: "Tools & Platforms", items: ["TabNet", "FastAPI", "Ollama", "Qdrant", "Groq API", "n8n", "SQLite", "Git", "GitHub"] }
       ],
-      projects: ["obliviate", "mlscratch", "maithili", "systemone", "tokenshield", "fccl", "saralkanoon"],
+      projects: ["systemone", "obliviate", "fccl", "tokenshield", "saralkanoon", "maithili", "mlscratch"],
       resumeBullets: 3,
       cv: "assets/Shristi_Sinha_Resume_ML.pdf"
     },
@@ -495,7 +549,7 @@ const SITE = {
         { group: "Machine Learning", items: ["Regression", "Classification", "Logistic Regression", "Naive Bayes", "KNN", "Decision Trees", "TabNet"] },
         { group: "Tools & Databases", items: ["SQL", "MySQL", "SQLite", "Database Design", "Firebase", "Git", "GitHub", "n8n"] }
       ],
-      projects: ["ranking", "systemone", "tokenshield", "fccl", "obliviate", "maithili"],
+      projects: ["systemone", "obliviate", "fccl", "tokenshield", "ranking", "maithili"],
       resumeBullets: 4,
       cv: "assets/Shristi_Sinha_Resume_DataScience.pdf"
     }
