@@ -136,7 +136,7 @@
   function renderSeg() {
     var html = KEYS.map(function (k) { return '<button type="button" data-v="' + k + '" aria-pressed="' + (k === view) + '" title="' + esc(S.profiles[k].label) + '">' + SHORT[k] + '</button>'; }).join('');
     ['view-seg', 'view-seg-m'].forEach(function (id) { var el = $(id); if (el) el.innerHTML = html; });
-    var HL = { generic: 'All', se: 'Software Engineering', ai: 'AI', ml: 'Machine Learning', ds: 'Data Science' };
+    var HL = { generic: 'Any role', se: 'Software Engineering', ai: 'AI', ml: 'Machine Learning', ds: 'Data Science' };
     var hs = $('hero-seg'); if (hs) hs.innerHTML = KEYS.map(function (k) { return '<button type="button" data-v="' + k + '" aria-pressed="' + (k === view) + '">' + HL[k] + '</button>'; }).join('');
   }
 
@@ -183,6 +183,7 @@
     }).join('');
     document.querySelectorAll('.chip-more').forEach(function (b) { b.addEventListener('click', function () { var box = b.parentNode, open = box.classList.toggle('open'); b.textContent = open ? 'Show less' : '+' + box.querySelectorAll('.extra').length + ' more'; b.setAttribute('aria-expanded', open); }); });
 
+    var hw = $('hero-work'); if (hw) hw.innerHTML = P.projects.slice(0, 5).map(function (key, i) { var p = S.projects[key]; return '<li><a href="#projects" data-i="' + i + '"><span class="wn">0' + (i + 1) + '</span><span class="wt"><b>' + esc(p.title) + '</b><small>' + esc(pick(p.subtitle, view)) + '</small></span><span class="wa">→</span></a></li>'; }).join('');
     if (window.Visuals) { window.Visuals.setArch(S.arch); document.querySelectorAll('.prow').forEach(function (row, i) { window.Visuals.bind(row, P.projects[i]); }); }
     observeReveals();
     layoutAll();
@@ -344,7 +345,6 @@
     } else { aX = vw * 0.84; aY = gStart + innerHeight * 0.4; }
   }
   var tri = function (t) { var m = ((t % 2) + 2) % 2; return m < 1 ? m : 2 - m; }; // 0..1..0
-  var gfc = 0;
   function moveGlobe() {
     if (!gStart || reduce) { globe.classList.remove('on'); return; }
     var vh = innerHeight, vw = innerWidth, sz = globe.clientWidth;
@@ -363,11 +363,9 @@
       x = lerp(x, vw / 2, kk); y = lerp(y, fy, kk);
     }
     globe.style.transform = 'translate(' + (x - sz / 2).toFixed(1) + 'px,' + (y - sz / 2).toFixed(1) + 'px)';
-    if (++gfc % 4 === 0) {                // fade the globe while it floats over reading text
-      var over = false, TXT = 'p,li,h1,h2,h3,h4,.chip,.chip-sm,.sub-label,figcaption,.hl-card,.pcap,.prow button,.tag';
-      if (!(typeof kk !== 'undefined' && kk > 0.6)) { var r = sz * 0.42; [[0, 0], [r, 0], [-r, 0], [0, r], [0, -r]].forEach(function (o) { if (over) return; var els = document.elementsFromPoint(x + o[0], y + o[1]); for (var q = 0; q < els.length; q++) { if (els[q] !== globe && els[q].closest && els[q].closest(TXT)) { over = true; break; } } }); }
-      globe.style.opacity = over && globe.classList.contains('on') ? '.12' : '';
-    }
+    var hide = false;                      // dense text sections: the globe slips below the screen and rises again afterwards
+    ['experience', 'highlights', 'interests'].forEach(function (id) { var s = $(id); if (!s || s.hidden) return; var q = s.getBoundingClientRect(); if (q.top < vh * 0.5 && q.bottom > vh * 0.15) hide = true; });
+    globe.style.translate = '0 ' + (hide ? (vh + sz * 1.5) : 0) + 'px';
   }
 
 
@@ -409,6 +407,7 @@
     if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(S.email).then(done, function () { location.href = 'mailto:' + S.email; });
     else location.href = 'mailto:' + S.email;
   }
+  document.addEventListener('click', function (e) { var a = e.target.closest('#hero-work a'); if (!a) return; e.preventDefault(); var r = document.querySelectorAll('.prow')[+a.dataset.i]; if (r) window.scrollTo({ top: r.getBoundingClientRect().top + scrollY - 90, behavior: 'smooth' }); });
   ['nav-mail', 'hero-mail', 'contact-mail'].forEach(function (id) { $(id).addEventListener('click', copyMail); });
 
   var ticking = false;
