@@ -771,15 +771,6 @@ footer { padding-top: clamp(150px, 11vw, 230px) !important; }
 @media (max-width: 600px) { .swipe { display: inline; } }
 
 /* v19: light gallery wall, collapsed skills, softer globe over text */
-#gallery.wrap { padding-top: clamp(4rem, 7vw, 8rem); padding-bottom: clamp(3rem, 6vw, 7rem); }
-#gallery .sec-title { color: var(--acc); margin-bottom: clamp(1.4rem, 2.4vw, 3rem); }
-.gal-grid { column-count: 3; column-gap: clamp(.9rem, 1.4vw, 1.6rem); }
-.gal-card { break-inside: avoid; margin: 0 0 clamp(.9rem, 1.4vw, 1.6rem); background: #fff; border-radius: 16px; overflow: hidden; box-shadow: 0 10px 30px rgba(189,74,116,.12); transition: transform .35s ease, box-shadow .35s ease; }
-.gal-card:hover { transform: translateY(-4px) rotate(-.4deg); box-shadow: 0 18px 42px rgba(189,74,116,.22); }
-.gal-card img { display: block; width: 100%; height: auto; }
-.gal-card figcaption { padding: .7rem 1rem .85rem; font-size: clamp(.8rem, .85vw, .98rem); color: var(--ink); line-height: 1.45; }
-@media (max-width: 1000px) { .gal-grid { column-count: 2; } }
-@media (max-width: 560px) { .gal-grid { column-count: 1; } }
 .chips-sm .extra { display: none; }
 .chips-sm.open .extra { display: inline-block; }
 .chip-more { cursor: pointer; background: var(--tint); border: 1px solid var(--pink); color: var(--acc); font-family: inherit; font-weight: 600; }
@@ -817,12 +808,8 @@ footer { padding-top: clamp(150px, 11vw, 230px) !important; }
 /* v22: "Selected work" index instead of stat cards */
 #hero-proof { width: min(22vw, 360px); display: block; color: #fff; }
 .hp-label { display: block; margin-bottom: .8rem; font-size: .75rem; letter-spacing: .14em; text-transform: uppercase; color: rgba(255,255,255,.75); }
-#hero-work { list-style: none; margin: 0; padding: 0; border-top: 1px solid rgba(255,255,255,.4); }
-#hero-work li { border-bottom: 1px solid rgba(255,255,255,.4); }
-#hero-work a { display: grid; grid-template-columns: 2.2rem 1fr auto; align-items: center; gap: .6rem; padding: .85rem .2rem; color: #fff; text-decoration: none; transition: padding .25s ease, color .25s ease; }
-#hero-work a:hover { padding-left: .7rem; color: var(--pink); }
-.wn { font: 400 1.05rem var(--display); color: var(--pink); }
-.wt b { display: block; font: 400 clamp(1.2rem, 1.6vw, 1.8rem)/1.1 var(--display); }
-.wt small { display: block; margin-top: .15rem; font-size: clamp(.74rem, .8vw, .9rem); color: rgba(255,255,255,.78); }
-.wa { opacity: .6; transition: transform .25s; }
-#hero-work a:hover .wa { transform: translateX(4px); opacity: 1; }
+#hero-work { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; align-items: flex-start; gap: .55rem; }
+#hero-work a.cta { font-size: clamp(.9rem, 1vw, 1.1rem); padding: .7rem 1.4rem; }
+#hero-work a.cta:hover { filter: brightness(1.04); scale: 1.04; }
+.wa { display: inline-block; margin-left: .35rem; transition: transform .25s; }
+#hero-work a:hover .wa { transform: translateX(4px); }
