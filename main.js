@@ -111,17 +111,10 @@
   var GP = [.16, -.12, .2, -.17, .1, -.2, .14];
   function buildGallery() {
     var g = S.gallery || []; if (!g.length) return;
-    var stage = $('gal');
-    stage.innerHTML = '';
-    galFigs = g.map(function (it, i) {
-      var f = document.createElement('figure'); f.className = 'gal-fig';
-      f.innerHTML = '<img src="' + esc(it.src) + '" alt="' + esc(it.caption || '') + '" loading="lazy"><figcaption>' + esc(it.caption || '') + '</figcaption>';
-      f.style.width = 'calc(clamp(120px, 11vw, 240px) * ' + GS[i % GS.length] + ')';
-      stage.appendChild(f); return f;
-    });
-    var words = g.length > 2 ? ['Build', 'Learn'] : ['Build'];
-    galWords = words.map(function (w) { var s = document.createElement('span'); s.className = 'ghost-word'; s.textContent = w; s.setAttribute('aria-hidden', 'true'); stage.insertBefore(s, stage.firstChild); return s; });
-    layoutGallery();
+    $('gal').innerHTML = g.map(function (it) {
+      return '<figure class="gal-card"><img src="' + esc(it.src) + '" alt="' + esc(it.caption || 'Photo from my gallery') + '" loading="lazy">' + (it.caption ? '<figcaption>' + esc(it.caption) + '</figcaption>' : '') + '</figure>';
+    }).join('');
+    galFigs = []; galWords = [];
   }
   function layoutGallery() {
     if (!galFigs.length) return;
@@ -143,6 +136,8 @@
   function renderSeg() {
     var html = KEYS.map(function (k) { return '<button type="button" data-v="' + k + '" aria-pressed="' + (k === view) + '" title="' + esc(S.profiles[k].label) + '">' + SHORT[k] + '</button>'; }).join('');
     ['view-seg', 'view-seg-m'].forEach(function (id) { var el = $(id); if (el) el.innerHTML = html; });
+    var HL = { generic: 'All', se: 'Software Engineering', ai: 'AI', ml: 'Machine Learning', ds: 'Data Science' };
+    var hs = $('hero-seg'); if (hs) hs.innerHTML = KEYS.map(function (k) { return '<button type="button" data-v="' + k + '" aria-pressed="' + (k === view) + '">' + HL[k] + '</button>'; }).join('');
   }
 
   function renderView() {
@@ -183,8 +178,10 @@
     }).join('');
 
     $('skills-grid').innerHTML = P.skills.map(function (g) {
-      return '<div class="skill-group reveal"><p class="sub-label">' + esc(g.group) + '</p><div class="chips-sm">' + g.items.map(function (i) { return '<span class="chip-sm">' + esc(i) + '</span>'; }).join('') + '</div></div>';
+      var LIM = 6, more = g.items.length - LIM;
+      return '<div class="skill-group reveal"><p class="sub-label">' + esc(g.group) + '</p><div class="chips-sm">' + g.items.map(function (i, k) { return '<span class="chip-sm' + (more > 1 && k >= LIM ? ' extra' : '') + '">' + esc(i) + '</span>'; }).join('') + (more > 1 ? '<button type="button" class="chip-sm chip-more" aria-expanded="false">+' + more + ' more</button>' : '') + '</div></div>';
     }).join('');
+    document.querySelectorAll('.chip-more').forEach(function (b) { b.addEventListener('click', function () { var box = b.parentNode, open = box.classList.toggle('open'); b.textContent = open ? 'Show less' : '+' + box.querySelectorAll('.extra').length + ' more'; b.setAttribute('aria-expanded', open); }); });
 
     if (window.Visuals) { window.Visuals.setArch(S.arch); document.querySelectorAll('.prow').forEach(function (row, i) { window.Visuals.bind(row, P.projects[i]); }); }
     observeReveals();
@@ -228,7 +225,10 @@
     var endW = Math.min(vw * (vw < 700 ? 0.8 : 0.336), 720);
     var endH = Math.min(vh * 0.58, endW * 1.05);
     var endB = vh * 0.2;
-    var w = lerp(vw, endW, e), h = lerp(vh, endH, e), b = lerp(0, endB, e);
+    var ph = vw < 900, h0 = vh * (ph ? 0.52 : 0.8), w0 = Math.min(ph ? vw * 0.9 : vw * 0.36, h0 * 0.87);
+    var w = lerp(w0, endW, e), h = lerp(h0, endH, e), b = lerp(0, endB, e);
+    var fade = 1 - clamp(p / 0.2, 0, 1);
+    ['hero-copy', 'hero-proof'].forEach(function (id) { var el = $(id); el.style.opacity = fade; el.style.visibility = fade > 0.02 ? 'visible' : 'hidden'; });
     portrait.style.width = w + 'px'; portrait.style.height = h + 'px'; portrait.style.bottom = b + 'px';
     portrait.style.borderRadius = (24 * e) + 'px';
     marquee.style.opacity = clamp((p - 0.12) / 0.3, 0, 1);
@@ -344,6 +344,7 @@
     } else { aX = vw * 0.84; aY = gStart + innerHeight * 0.4; }
   }
   var tri = function (t) { var m = ((t % 2) + 2) % 2; return m < 1 ? m : 2 - m; }; // 0..1..0
+  var gfc = 0;
   function moveGlobe() {
     if (!gStart || reduce) { globe.classList.remove('on'); return; }
     var vh = innerHeight, vw = innerWidth, sz = globe.clientWidth;
@@ -362,6 +363,11 @@
       x = lerp(x, vw / 2, kk); y = lerp(y, fy, kk);
     }
     globe.style.transform = 'translate(' + (x - sz / 2).toFixed(1) + 'px,' + (y - sz / 2).toFixed(1) + 'px)';
+    if (++gfc % 4 === 0) {                // fade the globe while it floats over reading text
+      var over = false, TXT = 'p,li,h1,h2,h3,h4,.chip,.chip-sm,.sub-label,figcaption,.hl-card,.pcap,.prow button,.tag';
+      if (!(typeof kk !== 'undefined' && kk > 0.6)) { var r = sz * 0.42; [[0, 0], [r, 0], [-r, 0], [0, r], [0, -r]].forEach(function (o) { if (over) return; var els = document.elementsFromPoint(x + o[0], y + o[1]); for (var q = 0; q < els.length; q++) { if (els[q] !== globe && els[q].closest && els[q].closest(TXT)) { over = true; break; } } }); }
+      globe.style.opacity = over && globe.classList.contains('on') ? '.12' : '';
+    }
   }
 
 
