@@ -551,7 +551,9 @@
   })();
   var MLN = ['Linear regression', 'Logistic regression', 'Softmax regression', 'Naive Bayes', 'KNN', 'Decision trees'], MCOL = [K.acc, K.teal, K.amber], ACOL = [K.acc, K.teal, K.vio, K.amber, K.blue, K.ok];
   var MREG = ['#f4d6e0', '#d3ecef', '#fbe8c9'];
-  var PX = 290, PY = 70, PW = 480, PH = 360;
+  var PX = 290, PY = 70, PW = 480, PH = 360, MOB = false;
+  function mlLayout(m) { MOB = m; if (m) { PX = 20; PY = 230; PW = 460; PH = 330; } else { PX = 290; PY = 70; PW = 480; PH = 360; } }
+  function mlItem(i) { return MOB ? [20 + (i % 2) * 240, 62 + Math.floor(i / 2) * 46, 220, 38] : [30, 84 + i * 44, 230, 36]; }
   function mx(x) { return PX + x * PW; } function my(y) { return PY + (1 - y) * PH; }
   function dots(c, D, col3, al) { D.forEach(function (p) { c.globalAlpha = al; c.beginPath(); c.arc(mx(p.x), my(p.y), 5, 0, 6.3); c.fillStyle = col3 ? MCOL[p.k] : K.acc; c.fill(); c.lineWidth = 1.5; c.strokeStyle = '#fff'; c.stroke(); }); c.globalAlpha = 1; }
   function regions(c, W, Kc) {
@@ -565,11 +567,11 @@
     c.font = '500 15px "SFMono-Regular",Consolas,monospace'; c.fillStyle = K.ink; c.textAlign = 'left'; c.textBaseline = 'middle'; c.fillText(cod.slice(0, n) + (t < 2.2 && Math.floor(t * 3) % 2 ? '▍' : ''), 30, 30);
     var cur = t < 2 ? -1 : Math.min(5, Math.floor((t - 2) / 4)), out = t > 26;
     MLN.forEach(function (nm, i) {
-      var y = 84 + i * 44, vis = t > 1.8 + i * .2, done = out || i < cur, on = i === cur && !out;
+      var q = mlItem(i), x = q[0], y = q[1], vis = t > 1.8 + i * .2, done = out || i < cur, on = i === cur && !out;
       if (!vis) return;
-      rr(c, 30, y, 230, 36, 10, '#fff', on ? ACOL[i] : K.line, on ? 2.5 : 1); if (on) rr(c, 30, y + 6, 5, 24, 2.5, ACOL[i]);
-      txt(c, nm, 46, y + 18.5, 13.5, on ? ACOL[i] : (done ? K.ink : K.dim), 'left', on ? 700 : 500);
-      if (done) txt(c, '✓', 244, y + 18.5, 14, K.ok, 'right', 700);
+      rr(c, x, y, q[2], q[3], 10, '#fff', on ? ACOL[i] : K.line, on ? 2.5 : 1); if (on) rr(c, x, y + 6, 5, q[3] - 12, 2.5, ACOL[i]);
+      txt(c, nm, x + 16, y + q[3] / 2 + .5, MOB ? 15 : 13.5, on ? ACOL[i] : (done ? K.ink : K.dim), 'left', on ? 700 : 500);
+      if (done) txt(c, '✓', x + q[2] - 14, y + q[3] / 2 + .5, 14, K.ok, 'right', 700);
     });
     rr(c, PX, PY, PW, PH, 14, '#fff', K.line, 1.5);
     if (t >= 2 && !out) {
@@ -601,19 +603,33 @@
     }
     if (out) {
       var a = seg(t, 26, 27); c.globalAlpha = a;
-      [['97.4%', 'Breast Cancer Wisconsin'], ['96.7%', 'Iris']].forEach(function (r, j) { var y = 120 + j * 110; txt(c, r[0], PX + PW / 2, y, 52, [K.acc, K.teal][j], 'center', 700); txt(c, r[1], PX + PW / 2, y + 40, 16, K.mute, 'center', 500); });
-      rr(c, PX + 60, 350, PW - 120, 40, 20, '#ece9fb'); txt(c, 'Public 30-day series · 36 commits so far', PX + PW / 2, 370.5, 14, K.vio, 'center', 700); c.globalAlpha = 1;
+      [['97.4%', 'Breast Cancer Wisconsin'], ['96.7%', 'Iris']].forEach(function (r, j) { var y = PY + 50 + j * (PH * .3); txt(c, r[0], PX + PW / 2, y, 52, [K.acc, K.teal][j], 'center', 700); txt(c, r[1], PX + PW / 2, y + 40, 16, K.mute, 'center', 500); });
+      rr(c, PX + 60, PY + PH - 80, PW - 120, 40, 20, '#ece9fb'); txt(c, 'Public 30-day series · 36 commits so far', PX + PW / 2, PY + PH - 59.5, 14, K.vio, 'center', 700); c.globalAlpha = 1;
     }
-    if (!out && t >= 2) { var nm = MLN[cur]; txt(c, nm + ', from scratch with NumPy', PX + PW / 2, 452, 15, K.ink, 'center', 600); }
+    if (!out && t >= 2) { var nm = MLN[cur]; txt(c, nm + ', from scratch with NumPy', PX + PW / 2, PY + PH + 22, 15, K.ink, 'center', 600); }
   }
 
   var SCN = { ranking: [drawRanking, 15], fccl: [drawFccl, 13.5], mlscratch: [drawMl, 29] };
   function sceneHTML(key, hint) { return '<canvas class="scn" data-k="' + key + '" width="1600" height="1000" aria-label="Animation"></canvas><p class="pcap hint">' + hint + '</p>'; }
   function Scene(cv, key) {
-    var c = cv.getContext('2d'), D = SCN[key], t0 = 0, raf = 0, run = false;
-    function draw(t) { c.setTransform(2, 0, 0, 2, 0, 0); c.clearRect(0, 0, 800, 500); c.fillStyle = '#fff'; c.fillRect(0, 0, 800, 500); try { D[0](c, t); } catch (e) { } }
-    function frame(now) { if (!run) return; var t = Math.max(0, now - t0) / 1000; if (t > D[1]) { t0 = now; t = 0; } draw(t); raf = requestAnimationFrame(frame); }
-    return { start: function () { if (run) return; run = true; t0 = performance.now(); raf = requestAnimationFrame(frame); }, stop: function () { run = false; cancelAnimationFrame(raf); }, restart: function () { t0 = performance.now(); }, draw: draw };
+    var c = cv.getContext('2d'), D = SCN[key], t0 = 0, raf = 0, run = false, sel = -1, LW = 800, LH = 500, mob = key === 'mlscratch' && window.innerWidth < 600;
+    if (mob) { LW = 500; LH = 640; cv.width = 1000; cv.height = 1280; cv.style.aspectRatio = '500 / 640'; }
+    function draw(t) { if (key === 'mlscratch') mlLayout(mob); c.setTransform(cv.width / LW, 0, 0, cv.width / LW, 0, 0); c.clearRect(0, 0, LW, LH); c.fillStyle = '#fff'; c.fillRect(0, 0, LW, LH); try { D[0](c, t); } catch (e) { } }
+    function frame(now) {
+      if (!run) return; var t = Math.max(0, now - t0) / 1000;
+      if (sel >= 0) t = 2 + sel * 4 + (t % 4);          // picked an algorithm: keep looping just that one
+      else if (t > D[1]) { t0 = now; t = 0; }
+      draw(t); raf = requestAnimationFrame(frame);
+    }
+    function hit(e) { if (key !== 'mlscratch') return -1; mlLayout(mob); var r = cv.getBoundingClientRect(), x = (e.clientX - r.left) / r.width * LW, y = (e.clientY - r.top) / r.height * LH; for (var i = 0; i < 6; i++) { var q = mlItem(i); if (x >= q[0] && x <= q[0] + q[2] && y >= q[1] && y <= q[1] + q[3]) return i; } return -1; }
+    cv.addEventListener('pointermove', function (e) { cv.style.cursor = hit(e) >= 0 ? 'pointer' : ''; });
+    return {
+      start: function () { if (run) return; run = true; t0 = performance.now(); raf = requestAnimationFrame(frame); },
+      stop: function () { run = false; cancelAnimationFrame(raf); },
+      restart: function () { sel = -1; t0 = performance.now(); },
+      click: function (e) { var i = hit(e); if (i >= 0) { sel = i; t0 = performance.now(); } else { sel = -1; t0 = performance.now(); } },
+      draw: draw
+    };
   }
 
   /* ============ panes ============ */
@@ -625,9 +641,9 @@
     tokenshield: { label: 'Attack stopped', html: function () { return video('assets/media/tokenshield.mp4', 'Animation of the flow: a planted instruction is stopped before it reaches the main model'); } },
     maithili: { label: 'Paper', html: paper },
     saralkanoon: { label: 'Demo', html: saral },
-    ranking: { label: 'Ranking', html: function () { return sceneHTML('ranking', 'Animation of the README pipeline with made-up profiles. Click to replay.'); } },
-    fccl: { label: 'Compression', html: function () { return sceneHTML('fccl', 'Animation of the README flow. Click to replay.'); } },
-    mlscratch: { label: 'From scratch', html: function () { return sceneHTML('mlscratch', 'Small live illustration of each algorithm, not the repo code. Click to replay.'); } }
+    ranking: { label: 'Ranking', html: function () { return sceneHTML('ranking', 'Animation of the README pipeline with made-up profiles. Click to replay.<span class="swipe"> Swipe sideways to see all of it.</span>'); } },
+    fccl: { label: 'Compression', html: function () { return sceneHTML('fccl', 'Animation of the README flow. Click to replay.<span class="swipe"> Swipe sideways to see all of it.</span>'); } },
+    mlscratch: { label: 'From scratch', html: function () { return sceneHTML('mlscratch', 'Click an algorithm to watch just that one. Click elsewhere to play them all. Small illustration, not the repo code.'); } }
   };
   var WIDE = { fccl: 0, tokenshield: 1 };
 
@@ -648,7 +664,7 @@
   function bind(row, key) {
     var pv = row.querySelector('.pvis'); if (!pv) return;
     var panes = pv.querySelectorAll('.pv-pane'), tabs = pv.querySelectorAll('.pv-tabs button'), anim = null;
-    var scv = pv.querySelector('.scn'), scn = scv ? Scene(scv, scv.dataset.k) : null; if (scv) scv.addEventListener('click', function () { scn.restart(); });
+    var scv = pv.querySelector('.scn'), scn = scv ? Scene(scv, scv.dataset.k) : null; if (scv) scv.addEventListener('click', function (e) { scn.click(e); });
     var fl = pv.querySelector('.flow'), nn = pv.querySelector('.n8n'); if (nn) anim = N8Ctl(nn); else if (fl && getFlow(key)) { anim = Anim(fl, key); fl.addEventListener('click', function () { anim.restart(); }); }
     function activate() {
       var on = pv.querySelector('.pv-pane.on'); if (!on) return;
