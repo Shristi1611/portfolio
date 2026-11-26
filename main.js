@@ -111,10 +111,17 @@
   var GP = [.16, -.12, .2, -.17, .1, -.2, .14];
   function buildGallery() {
     var g = S.gallery || []; if (!g.length) return;
-    $('gal').innerHTML = g.map(function (it) {
-      return '<figure class="gal-card"><img src="' + esc(it.src) + '" alt="' + esc(it.caption || 'Photo from my gallery') + '" loading="lazy">' + (it.caption ? '<figcaption>' + esc(it.caption) + '</figcaption>' : '') + '</figure>';
-    }).join('');
-    galFigs = []; galWords = [];
+    var stage = $('gal');
+    stage.innerHTML = '';
+    galFigs = g.map(function (it, i) {
+      var f = document.createElement('figure'); f.className = 'gal-fig';
+      f.innerHTML = '<img src="' + esc(it.src) + '" alt="' + esc(it.caption || 'Photo from my gallery') + '" loading="lazy">' + (it.caption ? '<figcaption>' + esc(it.caption) + '</figcaption>' : '');
+      f.style.width = 'calc(clamp(120px, 11vw, 240px) * ' + GS[i % GS.length] + ')';
+      stage.appendChild(f); return f;
+    });
+    var words = g.length > 2 ? ['Build', 'Learn'] : ['Build'];
+    galWords = words.map(function (w) { var s = document.createElement('span'); s.className = 'ghost-word'; s.textContent = w; s.setAttribute('aria-hidden', 'true'); stage.insertBefore(s, stage.firstChild); return s; });
+    layoutGallery();
   }
   function layoutGallery() {
     if (!galFigs.length) return;
@@ -183,7 +190,7 @@
     }).join('');
     document.querySelectorAll('.chip-more').forEach(function (b) { b.addEventListener('click', function () { var box = b.parentNode, open = box.classList.toggle('open'); b.textContent = open ? 'Show less' : '+' + box.querySelectorAll('.extra').length + ' more'; b.setAttribute('aria-expanded', open); }); });
 
-    var hw = $('hero-work'); if (hw) hw.innerHTML = P.projects.slice(0, 5).map(function (key, i) { var p = S.projects[key]; return '<li><a href="#projects" data-i="' + i + '"><span class="wn">0' + (i + 1) + '</span><span class="wt"><b>' + esc(p.title) + '</b><small>' + esc(pick(p.subtitle, view)) + '</small></span><span class="wa">→</span></a></li>'; }).join('');
+    var hw = $('hero-work'); if (hw) hw.innerHTML = P.projects.slice(0, 5).map(function (key, i) { var p = S.projects[key]; return '<li><a class="cta" href="#projects" data-i="' + i + '" title="' + esc(pick(p.subtitle, view)) + '">' + esc(p.title) + ' <span class="wa">→</span></a></li>'; }).join('');
     if (window.Visuals) { window.Visuals.setArch(S.arch); document.querySelectorAll('.prow').forEach(function (row, i) { window.Visuals.bind(row, P.projects[i]); }); }
     observeReveals();
     layoutAll();
@@ -363,9 +370,6 @@
       x = lerp(x, vw / 2, kk); y = lerp(y, fy, kk);
     }
     globe.style.transform = 'translate(' + (x - sz / 2).toFixed(1) + 'px,' + (y - sz / 2).toFixed(1) + 'px)';
-    var hide = false;                      // dense text sections: the globe slips below the screen and rises again afterwards
-    ['experience', 'highlights', 'interests'].forEach(function (id) { var s = $(id); if (!s || s.hidden) return; var q = s.getBoundingClientRect(); if (q.top < vh * 0.5 && q.bottom > vh * 0.15) hide = true; });
-    globe.style.translate = '0 ' + (hide ? (vh + sz * 1.5) : 0) + 'px';
   }
 
 
