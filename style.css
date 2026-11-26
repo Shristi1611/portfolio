@@ -818,3 +818,8 @@ footer { padding-top: clamp(150px, 11vw, 230px) !important; }
 #hero-proof { width: max-content; max-width: 26vw; text-align: center; }
 #hero-proof .hp-label { text-align: center; margin-bottom: .9rem; }
 #hero-work { align-items: center; }
+
+/* v25: all Selected work buttons the same width */
+#hero-work { align-items: stretch; }
+#hero-work li { display: block; }
+#hero-work a.cta { display: block; width: 100%; text-align: center; }
