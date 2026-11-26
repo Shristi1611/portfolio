@@ -47,9 +47,9 @@ const SITE = {
   motivation: {
     lead: "I get to pursue my passion.",
     paras: [
-      "Ever since I was a child, computer science has been the subject that fascinated me most. Even during difficult times at home, when I could not study much and my other subjects suffered, computer science was the one I still scored best in, because I studied it out of passion rather than obligation.",
+      "Ever since I was a child, computer science has been the subject that fascinated me most. I studied it out of passion rather than obligation.",
       "It was a hobby long before it was a career: something I explored in my free time. In 11th grade I started learning TinyML, simply because I enjoyed it.",
-      "When it came to choosing a degree, computer science was not my first choice because of the cost, so I chose a research path through the IISERs. But computer science never left my mind. I realised that whatever else I chose to do, it would always come second to CS. So I chose B.Tech Computer Science, and I have never been happier. I study it the way I always have, as if I were doing something fun."
+      "When it came to choosing a degree, computer science was not my first choice, so I chose a research path through the IISERs. But computer science never left my mind. I realised that whatever else I chose to do, it would always come second to CS. So I chose B.Tech Computer Science, and I have never been happier. I study it the way I always have, as if I were doing something fun."
     ]
   },
   mindset: [
@@ -70,10 +70,17 @@ const SITE = {
   },
   gallery: [
     { src: "assets/g1.jpg", caption: "Presenting my project to my professors" },
+    { src: "assets/gal1.jpg", caption: "" },
     { src: "assets/g2.jpg", caption: "Drone workshop: programming a Pluto drone with blocks" },
-    { src: "assets/g3.jpg", caption: "Drone lab, Krishi Vigyan Kendra Baramati" },
+    { src: "assets/gal5.jpg", caption: "Peer Counselling Club, GH Raisoni" },
+    { src: "assets/gal2.jpg", caption: "" },
     { src: "assets/g4.jpg", caption: "Colossus 3.0 finalist" },
+    { src: "assets/gal3.jpg", caption: "" },
+    { src: "assets/g3.jpg", caption: "Drone lab, Krishi Vigyan Kendra Baramati" },
+    { src: "assets/gal6.jpg", caption: "World Mental Health Day event, GH Raisoni" },
+    { src: "assets/gal4.jpg", caption: "" },
     { src: "assets/g5.jpg", caption: "Drone workshop at GH Raisoni" },
+    { src: "assets/gal7.jpg", caption: "Toastmasters club session, GH Raisoni" },
     { src: "assets/g6.jpg", caption: "Copyright registration, HerBalance" }
   ],
   socialPhotos: ["assets/s1.jpg","assets/s2.jpg","assets/s3.jpg","assets/s4.jpg","assets/s5.jpg","assets/s6.jpg","assets/s7.jpg","assets/s8.jpg","assets/s9.jpg","assets/s10.jpg"],
