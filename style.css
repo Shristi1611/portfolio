@@ -785,7 +785,7 @@ footer { padding-top: clamp(150px, 11vw, 230px) !important; }
 .chip-more { cursor: pointer; background: var(--tint); border: 1px solid var(--pink); color: var(--acc); font-family: inherit; font-weight: 600; }
 .chip-more:hover { background: var(--pink); }
 #interests .chip-sm { font-size: clamp(.86rem, .95vw, 1.05rem); }
-#globe { transition: opacity .35s; }
+#globe { transition: opacity .6s, translate .9s cubic-bezier(.45,0,.2,1); }
 
 /* v20: calmer first screen: smaller portrait, headline, proof cards, "hiring for" pills */
 #stickers { display: none !important; }
@@ -813,3 +813,16 @@ footer { padding-top: clamp(150px, 11vw, 230px) !important; }
 #portrait { background: transparent !important; }
 #hero-copy { width: min(28vw, 500px); }
 @media (max-width: 899px) { #hero-copy { top: 6rem; width: auto; } }
+
+/* v22: "Selected work" index instead of stat cards */
+#hero-proof { width: min(22vw, 360px); display: block; color: #fff; }
+.hp-label { display: block; margin-bottom: .8rem; font-size: .75rem; letter-spacing: .14em; text-transform: uppercase; color: rgba(255,255,255,.75); }
+#hero-work { list-style: none; margin: 0; padding: 0; border-top: 1px solid rgba(255,255,255,.4); }
+#hero-work li { border-bottom: 1px solid rgba(255,255,255,.4); }
+#hero-work a { display: grid; grid-template-columns: 2.2rem 1fr auto; align-items: center; gap: .6rem; padding: .85rem .2rem; color: #fff; text-decoration: none; transition: padding .25s ease, color .25s ease; }
+#hero-work a:hover { padding-left: .7rem; color: var(--pink); }
+.wn { font: 400 1.05rem var(--display); color: var(--pink); }
+.wt b { display: block; font: 400 clamp(1.2rem, 1.6vw, 1.8rem)/1.1 var(--display); }
+.wt small { display: block; margin-top: .15rem; font-size: clamp(.74rem, .8vw, .9rem); color: rgba(255,255,255,.78); }
+.wa { opacity: .6; transition: transform .25s; }
+#hero-work a:hover .wa { transform: translateX(4px); opacity: 1; }
